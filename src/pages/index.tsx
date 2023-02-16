@@ -6,7 +6,7 @@ export default function Home() {
     <>
       <SEO />
       <div>
-        Hello
+        Coming Soon!
       </div>
     </>
   )
