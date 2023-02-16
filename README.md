@@ -1,5 +1,7 @@
 ## Getting Started
 
+### Currently in development mode. To be published soon!
+
 First, run the development server:
 
 ```bash
