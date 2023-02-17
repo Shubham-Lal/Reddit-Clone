@@ -1,16 +1,20 @@
 import { authModalState } from "../../../atoms/authModalAtom";
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "../../../firebase/clientApp";
+import { FIREBASE_ERRORS } from "../../../firebase/errors";
 
 
-const SignUp:React.FC = () => {
+const SignUp: React.FC = () => {
     const setAuthModalState = useSetRecoilState(authModalState);
     const [signUpForm, setSignUpForm] = useState({
         email: "",
         password: "",
         confirmPassword: ""
     });
+    const [error, setError] = useState("");
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSignUpForm(prev => ({
@@ -19,8 +23,25 @@ const SignUp:React.FC = () => {
         }))
     }
 
-    const onSubmit = () => {
+    const [
+        createUserWithEmailAndPassword,
+        user,
+        loading,
+        userError,
+    ] = useCreateUserWithEmailAndPassword(auth);
 
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (error) setError("");
+        if (signUpForm.password != signUpForm.confirmPassword) {
+            setError("Password do not match!");
+            return;
+        }
+        if (signUpForm.password.length<6) {
+            setError("Password must be atleast 6 characters long!");
+            return;
+        }
+        createUserWithEmailAndPassword(signUpForm.email, signUpForm.password)
     }
 
     return (
@@ -91,7 +112,12 @@ const SignUp:React.FC = () => {
                     borderColor: "blue.500"
                 }}
             />
-            <Button type="submit" width="100%" height="36px" mt={2} mb={2}>
+            {(error || userError) && (
+                <Text textAlign="center" color="red" fontSize="10pt">
+                    {error || FIREBASE_ERRORS[userError?.message as keyof typeof FIREBASE_ERRORS]}
+                </Text>
+            )}
+            <Button type="submit" width="100%" height="36px" mt={2} mb={2} isLoading={loading}>
                 Sign Up
             </Button>
             <Flex fontSize="9pt" justifyContent="center">

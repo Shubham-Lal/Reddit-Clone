@@ -2,6 +2,9 @@ import { authModalState } from "../../../atoms/authModalAtom";
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "../../../firebase/clientApp";
+import { FIREBASE_ERRORS } from "../../../firebase/errors";
 
 
 type LoginProps = {
@@ -10,6 +13,7 @@ type LoginProps = {
 
 const Login: React.FC<LoginProps> = () => {
     const setAuthModalState = useSetRecoilState(authModalState);
+    const [error, setError] = useState("");
     const [loginForm, setLoginForm] = useState({
         email: "",
         password: ""
@@ -22,8 +26,21 @@ const Login: React.FC<LoginProps> = () => {
         }))
     }
 
-    const onSubmit = () => {
+    const [
+        signInWithEmailAndPassword,
+        user,
+        loading,
+        userError,
+    ] = useSignInWithEmailAndPassword(auth);
 
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (error) setError("");
+        if (loginForm.password.length < 6) {
+            setError("Password must be atleast 6 characters long!");
+            return;
+        }
+        signInWithEmailAndPassword(loginForm.email, loginForm.password);
     }
 
     return (
@@ -72,6 +89,11 @@ const Login: React.FC<LoginProps> = () => {
                     borderColor: "blue.500"
                 }}
             />
+            {(error || userError) && (
+                <Text textAlign="center" color="red" fontSize="10pt">
+                    {error || FIREBASE_ERRORS[userError?.message as keyof typeof FIREBASE_ERRORS]}
+                </Text>
+            )}
             <Button type="submit" width="100%" height="36px" mt={2} mb={2}>
                 Log In
             </Button>
