@@ -6,6 +6,7 @@ import OAuthButtons from "./OAuthButtons";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../firebase/clientApp";
 import { useEffect } from "react";
+import ResetPassword from "./ResetPassword";
 
 
 const AuthModal: React.FC = () => {
@@ -20,7 +21,7 @@ const AuthModal: React.FC = () => {
     }
 
     useEffect(() => {
-        if (user) handleClose(); 
+        if (user) handleClose();
     }, [user]);
 
     return (
@@ -29,20 +30,27 @@ const AuthModal: React.FC = () => {
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>
-                    {/* <ModalHeader textAlign="center"> */}
+                        {/* <ModalHeader textAlign="center"> */}
                         {modalState.view === "login" && "Sign in to your account"}
                         {modalState.view === "signup" && "Create your new account"}
-                        {modalState.view === "resetPassword" && "Reset your password"}
+                        {modalState.view === "resetPassword" && "Reset password"}
                     </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody display="flex" flexDirection="column" alignItems="center" justifyContent="center" pb={6}>
                         <Flex direction="column" align="center" justify="center" width="70%">
-                            <OAuthButtons />
-                            <Text align="center" justifyContent="center" color="gray.500" fontWeight={700} border="1px solid" borderColor="gray.300" borderRadius="50%" padding="5px">
-                                OR
-                            </Text>
-                            <AuthInputs />
-                            {/* <ResetPassword /> */}
+                            {modalState.view === "login" || modalState.view === "signup"
+                                ? (
+                                    <>
+                                        <OAuthButtons />
+                                        <Text align="center" justifyContent="center" color="gray.500" fontWeight={700} border="1px solid" borderColor="gray.300" borderRadius="50%" padding="5px">
+                                            OR
+                                        </Text>
+                                        <AuthInputs />
+                                    </>
+                                )
+                                : <ResetPassword />
+                            }
+
                         </Flex>
                     </ModalBody>
                 </ModalContent>
