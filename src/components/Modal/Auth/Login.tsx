@@ -94,7 +94,7 @@ const Login: React.FC<LoginProps> = () => {
                     {error || FIREBASE_ERRORS[userError?.message as keyof typeof FIREBASE_ERRORS]}
                 </Text>
             )}
-            <Button type="submit" width="100%" height="36px" mt={2} mb={2}>
+            <Button type="submit" width="100%" height="36px" mt={2} mb={2} isLoading={loading}>
                 Log In
             </Button>
             <Flex fontSize="9pt" justifyContent="center">
