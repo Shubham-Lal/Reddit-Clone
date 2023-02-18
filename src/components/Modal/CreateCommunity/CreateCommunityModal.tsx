@@ -34,11 +34,11 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({ open, handl
         setNoChar("No");
         return;
 
-    }
+    };
 
     const onCommunityTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCommunityType(e.target.name);
-    }
+    };
 
     const handleCreateCommunity = async () => {
         setError("");
@@ -73,7 +73,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({ open, handl
         finally {
             setLoading(false);
         }
-    }
+    };
 
     return (
         <>
