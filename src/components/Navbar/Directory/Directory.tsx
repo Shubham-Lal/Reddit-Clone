@@ -2,6 +2,7 @@ import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Flex, Icon, Menu, MenuButton, MenuList, Text } from '@chakra-ui/react';
 import React from 'react';
 import { TiHome } from "react-icons/ti";
+import Communities from './Communities';
 
 const Directory: React.FC = () => {
 
@@ -21,7 +22,7 @@ const Directory: React.FC = () => {
                 </Flex>
             </MenuButton>
             <MenuList>
-                Communities (Comming Soon)
+                <Communities />
             </MenuList>
         </Menu>
     )
