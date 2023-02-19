@@ -1,9 +1,11 @@
-import { authModalState } from "../../../atoms/authModalAtom";
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { User } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "../../../firebase/clientApp";
+import { useSetRecoilState } from "recoil";
+import { authModalState } from "../../../atoms/authModalAtom";
+import { auth, firestore } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
 
 
@@ -25,7 +27,7 @@ const SignUp: React.FC = () => {
 
     const [
         createUserWithEmailAndPassword,
-        user,
+        userCred,
         loading,
         userError,
     ] = useCreateUserWithEmailAndPassword(auth);
@@ -37,12 +39,25 @@ const SignUp: React.FC = () => {
             setError("Password do not match!");
             return;
         }
-        if (signUpForm.password.length<6) {
+        if (signUpForm.password.length < 6) {
             setError("Password must be atleast 6 characters long!");
             return;
         }
         createUserWithEmailAndPassword(signUpForm.email, signUpForm.password)
     }
+
+    const createUserDocument = async (user: User) => {
+        await setDoc(
+            doc(firestore, "users", user.uid),
+            JSON.parse(JSON.stringify(user))
+        );
+    }
+
+    useEffect(() => {
+        if (userCred) {
+            createUserDocument(userCred.user);
+        }
+    }, [userCred]);
 
     return (
         <form onSubmit={onSubmit}>

@@ -1,6 +1,6 @@
 import { auth, firestore } from '../../../firebase/clientApp';
 import { Icon, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Box, Divider, Text, Input, Stack, Checkbox, Flex, Link } from '@chakra-ui/react';
-import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { doc, runTransaction, serverTimestamp } from 'firebase/firestore';
 import { useState } from "react";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
@@ -20,6 +20,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({ open, handl
     const [communityType, setCommunityType] = useState("public");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    // const format = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
     const format = /[ `!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +44,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({ open, handl
     const handleCreateCommunity = async () => {
         setError("");
         if (format.test(communityName)) {
-            setError("Community names can only contain letters, numbers, hyphens or underscores.");
+            setError("Community names can only contain letters, numbers, hyphens, underscores or full-stops.");
             return;
         }
         if (communityName.length < 3) {
@@ -53,19 +54,34 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({ open, handl
 
         setLoading(true);
         try {
+            // const communityDocRef = doc(firestore, "communities", communityName);
             const communityDocRef = doc(firestore, "communities", communityName.toLowerCase());
-            const communityDoc = await getDoc(communityDocRef);
 
-            if (communityDoc.exists()) {
-                throw new Error(`Sorry, r/${communityName} is taken. Please try another.`)
-            }
+            await runTransaction(firestore, async (transaction) => {
+                // To check if Community exists
+                const communityDoc = await transaction.get(communityDocRef);
+                if (communityDoc.exists()) {
+                    throw new Error(`Sorry, r/${communityName} is taken. Please try another.`)
+                }
 
-            await setDoc(communityDocRef, {
-                creatorId: user?.uid,
-                createdAt: serverTimestamp(),
-                numberOfMembers: 1,
-                privacyType: communityType
-            });
+                // Creating Community here
+                transaction.set(communityDocRef, {
+                    creatorId: user?.uid,
+                    createdAt: serverTimestamp(),
+                    numberOfMembers: 1,
+                    privacyType: communityType,
+                    verified: false
+                });
+
+                // Creating Community Snippet here
+                transaction.set(
+                    doc(firestore, `users/${user?.uid}/communitySnippets`, communityName),
+                    {
+                        communityId: communityName,
+                        isModerator: true,
+                    }
+                );
+            })
         }
         catch (error: any) {
             setError(error.message);
