@@ -22,7 +22,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({ open, handl
     const [loading, setLoading] = useState(false);
     // const format = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
     const format = /[ `!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
-
+    
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setError("");
         if (format.test(e.target.value)) {
@@ -76,10 +76,11 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({ open, handl
 
                 // Creating Community Snippet here
                 transaction.set(
-                    doc(firestore, `users/${user?.uid}/communitySnippets`, communityName),
+                    doc(firestore, `users/${user?.uid}/communitySnippets`, communityName.toLowerCase()),
                     {
                         communityId: communityName,
                         isModerator: true,
+                        imageURL: ""
                     }
                 );
             })

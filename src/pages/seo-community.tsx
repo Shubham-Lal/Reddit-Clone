@@ -5,8 +5,8 @@ type CommunitySEOProps = {
     CommunityData: Community
 };
 
-const CommunitySEO:React.FC<CommunitySEOProps> = ({ CommunityData }) => {
-    
+const CommunitySEO: React.FC<CommunitySEOProps> = ({ CommunityData }) => {
+
     return (
         <Head>
             <title>{CommunityData?.id}</title>
