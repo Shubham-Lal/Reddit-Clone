@@ -1,5 +1,4 @@
 import { Flex, Button } from "@chakra-ui/react";
-import { Head } from "next/document";
 import Link from "next/link";
 
 const NotFound: React.FC = () => {
