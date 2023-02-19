@@ -6,7 +6,7 @@ type CommunitySEOProps = {
 };
 
 const CommunitySEO:React.FC<CommunitySEOProps> = ({ CommunityData }) => {
-    const seoImg = CommunityData.imageURL ? CommunityData.imageURL : "/favicon.ico";
+    const seoImg = CommunityData?.imageURL ? CommunityData?.imageURL : "/favicon.ico";
     
     return (
         <Head>
