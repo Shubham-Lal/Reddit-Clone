@@ -1,4 +1,4 @@
-import { Flex, Button } from "@chakra-ui/react";
+import { Flex, Button, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import SEO from "./seo";
 
@@ -16,7 +16,7 @@ const Error: React.FC = () => {
                 margin="0 10px"
                 textAlign="center"
             >
-                Sorry, this page doesn't exists!
+                <Text>Sorry, this page doesn't exists!</Text>
                 <Link href="/">
                     <Button mt={4}>GO HOME</Button>
                 </Link>
