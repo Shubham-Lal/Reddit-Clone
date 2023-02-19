@@ -7,6 +7,7 @@ import NotFound from "../../../components/Community/NotFound";
 import CommunitySEO from "../../../pages/seo-community";
 import SEO from "../../../pages/seo";
 import Header from "@/components/Community/Header";
+import PageContent from "../../../components/Layout/PageContent";
 
 
 type CommunityPageProps = {
@@ -27,6 +28,10 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
         <>
             <CommunitySEO CommunityData={communityData}/>
             <Header communityData={communityData}/>
+            <PageContent>
+                <></>
+                <></>
+            </PageContent>
         </>
     )
 }

@@ -6,14 +6,14 @@ type PageContentProps = {
 };
 
 const PageContent:React.FC<PageContentProps> = ({ children }) => {
-    
+
     return (
         <Flex>
             <Flex>
-                // Left Side
+                {/* Left Side */}
                 <Flex></Flex>
 
-                // Right Side
+                {/* Right Side */}
                 <Flex></Flex>
             </Flex>
         </Flex>
