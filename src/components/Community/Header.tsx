@@ -17,8 +17,11 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
             <Flex justify="center" bg="white" flexGrow={1}>
                 <Flex width="95%" maxWidth="860px">
                     {communityData.imageURL
-                        ? <Image src={communityData.imageURL} alt={communityData.id}/>
-                        : <Icon as={FaReddit} fontSize={64} position="relative" top={-3} color="#FF3C00" border="4px solid white" borderRadius="50%" />
+                        ? <Image src={communityData.imageURL} alt={communityData.id} width={16} height={16} position="relative" top={-3} border="4px solid white" borderRadius="50%"/>
+                        : <>
+                            <Icon as={FaReddit} fontSize={64} position="relative" top={-3} color="#FF3C00" border="4px solid white" borderRadius="50%" />
+                            {/* <Icon as={FaReddit} width={16} height={16} position="relative" top={-3} color="#FF3C00" border="4px solid white" borderRadius="50%" /> */}
+                        </>
                     }
                     <Flex padding="10px 16px">
                         <Flex direction="column" mr={6}>
@@ -32,7 +35,7 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
                                 r/{communityData.id}
                             </Text>
                         </Flex>
-                        <Button variant={isJoined ? "outline": "solid"} height="30px" pr={6} pl={6} onClick={() => {}}>
+                        <Button variant={isJoined ? "outline" : "solid"} height="30px" pr={6} pl={6} onClick={() => { }}>
                             {isJoined ? "Joined" : "Join"}
                         </Button>
                     </Flex>

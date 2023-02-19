@@ -55,7 +55,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({ open, handl
         setLoading(true);
         try {
             // const communityDocRef = doc(firestore, "communities", communityName);
-            const communityDocRef = doc(firestore, "communities", communityName.toLowerCase());
+            const communityDocRef = doc(firestore, "communities", communityName);
 
             await runTransaction(firestore, async (transaction) => {
                 // To check if Community exists
@@ -67,9 +67,10 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({ open, handl
                 // Creating Community here
                 transaction.set(communityDocRef, {
                     creatorId: user?.uid,
-                    createdAt: serverTimestamp(),
                     numberOfMembers: 1,
                     privacyType: communityType,
+                    createdAt: serverTimestamp(),
+                    imageURL: "",
                     verified: false
                 });
 

@@ -25,7 +25,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                     {user
                         ? (
                             <>
-                                <Icon as={FaRedditSquare} fontSize={24} mr={1} color="gray.200" />
+                                <Icon as={FaRedditSquare} fontSize={24} mr={1} color="#FF3C00" />
                                 <Box
                                     display={{ base: "none", lg: "flex" }}
                                     flexDirection="column"
@@ -46,7 +46,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                         )
                         : (
                             <>
-                                <Icon as={VscAccount} fontSize={24} color="gray.400" mr={1} />
+                                <Icon as={VscAccount} fontSize={24} color="#FF3C00" mr={1} />
                                 <ChevronDownIcon />
                             </>
                         )
