@@ -4,7 +4,6 @@ import { auth } from "../../firebase/clientApp";
 import Directory from "./Directory/Directory";
 import RightContent from "./RightContent/RightContent";
 import SearchInput from "./SearchInput";
-import Link from "next/link";
 
 
 const Navbar: React.FC = () => {

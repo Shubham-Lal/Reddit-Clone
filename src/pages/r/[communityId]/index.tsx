@@ -17,7 +17,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
     if (!communityData) {
         return (
             <>
-                <SEO />
+                <SEO/>
                 <NotFound />
             </>
         )

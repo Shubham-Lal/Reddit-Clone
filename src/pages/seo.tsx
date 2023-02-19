@@ -1,7 +1,6 @@
 import Head from "next/head";
 
-export default function SEO() {
-
+const SEO = () => {
     return (
         <Head>
             <title>Reddit Clone</title>
@@ -11,3 +10,4 @@ export default function SEO() {
         </Head>
     )
 }
+export default SEO;
