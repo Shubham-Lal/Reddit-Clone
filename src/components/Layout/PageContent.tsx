@@ -8,13 +8,17 @@ type PageContentProps = {
 const PageContent:React.FC<PageContentProps> = ({ children }) => {
 
     return (
-        <Flex>
-            <Flex>
+        <Flex justify="center" padding="16px 0">
+            <Flex width="95%" justify="center" maxWidth="860px">
                 {/* Left Side */}
-                <Flex></Flex>
+                <Flex direction="column" width={{ base: "100%", md: "65%" }} mr={{ base: 0, md: 6 }}>
+                    {children && children[0 as keyof typeof children]}
+                </Flex>
 
                 {/* Right Side */}
-                <Flex></Flex>
+                <Flex direction="column" display={{ base: "none", md: "flex" }} flexGrow={1}>
+                    {children && children[1 as keyof typeof children]}
+                </Flex>
             </Flex>
         </Flex>
     )
