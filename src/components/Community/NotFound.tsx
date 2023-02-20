@@ -11,7 +11,7 @@ const NotFound: React.FC = () => {
       margin="0 10px"
       textAlign="center"
     >
-      Sorry, that community does not exist or has been banned
+      Sorry, the page you are looking for doesn't exists!
       <Link href="/">
         <Button mt={4}>GO HOME</Button>
       </Link>

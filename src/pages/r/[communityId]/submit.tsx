@@ -1,5 +1,5 @@
 import { Community } from "../../../atoms/communitiesAtom";
-import { firestore } from "../../../firebase/clientApp";
+import { auth, firestore } from "../../../firebase/clientApp";
 import CommunitySEO from "../../seo-community";
 import { doc, getDoc } from "firebase/firestore";
 import { GetServerSidePropsContext } from "next";
@@ -7,6 +7,9 @@ import safeJsonStringify from "safe-json-stringify";
 import PageContent from "../../../components/Layout/PageContent";
 import { Box, Text } from "@chakra-ui/react";
 import NewPostForm from "../../../components/Posts/NewPostForm";
+import { useAuthState } from "react-firebase-hooks/auth";
+import SEO from "../../seo";
+import NotFound from "../../../components/Community/NotFound";
 
 
 type SubmitPostPageProps = {
@@ -15,20 +18,30 @@ type SubmitPostPageProps = {
 
 const SubmitPostPage: React.FC<SubmitPostPageProps> = ({ communityData }) => {
 
+
+    const [user] = useAuthState(auth);
+    if (user) {
+        return (
+            <>
+                <CommunitySEO CommunityData={communityData} />
+                <PageContent>
+                    <>
+                        <Box p="14px 0" borderBottom="1px solid" borderColor="white">
+                            <Text>
+                                Create a post
+                            </Text>
+                        </Box>
+                        <NewPostForm />
+                    </>
+                    <>About Component</>
+                </PageContent>
+            </>
+        )
+    }
     return (
         <>
-            <CommunitySEO CommunityData={communityData} />
-            <PageContent>
-                <>
-                    <Box p="14px 0" borderBottom="1px solid" borderColor="white">
-                        <Text>
-                            Create a post
-                        </Text>
-                    </Box>
-                    <NewPostForm />
-                </>
-                <>About Component</>
-            </PageContent>
+            <SEO />
+            <NotFound />
         </>
     )
 }
