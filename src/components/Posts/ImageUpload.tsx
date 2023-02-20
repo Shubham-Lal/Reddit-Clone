@@ -9,7 +9,7 @@ const ImageUpload: React.FC<ImageUploadProps> = () => {
 
     return (
         <Flex>
-
+            Coming Soon
         </Flex>
     )
 }

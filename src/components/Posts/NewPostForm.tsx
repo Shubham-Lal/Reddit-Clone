@@ -8,6 +8,7 @@ import TextInputs from "./TextInputs";
 import LinksPostForm from "./LinksPostForm";
 import PollsPostForm from "./PollsPostForm";
 import TalkPostForm from "./TalkPostForm";
+import ImageUpload from "./ImageUpload";
 
 
 type NewPostFormProps = {
@@ -72,7 +73,7 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
             </Flex>
             <Flex p={4}>
                 {selectedTab === "Post" && <TextInputs textInputs={textInputs} onChange={onTextChange} handleCreatePost={handleCreatePost} loading={loading} />}
-                {selectedTab === "Images & Video" && ""}
+                {selectedTab === "Images & Video" && <ImageUpload />}
                 {selectedTab === "Links" && <LinksPostForm />}
                 {selectedTab === "Poll" && <PollsPostForm />}
                 {selectedTab === "Talk" && <TalkPostForm />}

@@ -17,8 +17,6 @@ type SubmitPostPageProps = {
 };
 
 const SubmitPostPage: React.FC<SubmitPostPageProps> = ({ communityData }) => {
-
-
     const [user] = useAuthState(auth);
     if (user) {
         return (
