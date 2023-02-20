@@ -3,23 +3,23 @@ import React from "react";
 
 
 type TextInputsProps = {
-    textInput: {
+    textInputs: {
         title: string;
-        body?: string;
+        body: string;
     };
     onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     handleCreatePost: () => void;
     loading: boolean;
 };
 
-const TextInputs: React.FC<TextInputsProps> = ({ textInput, onChange, handleCreatePost, loading }) => {
+const TextInputs: React.FC<TextInputsProps> = ({ textInputs, onChange, handleCreatePost, loading }) => {
 
     return (
         <Stack spacing={3} width="100%">
             <Input
                 name="title"
-                // value={}
-                // onChange={}
+                value={textInputs.title}
+                onChange={onChange}
                 fontSize="12pt"
                 borderRadius={4}
                 placeholder="Title"
@@ -28,8 +28,8 @@ const TextInputs: React.FC<TextInputsProps> = ({ textInput, onChange, handleCrea
             />
             <Textarea
                 name="body"
-                // value={}
-                // onChange={}
+                value={textInputs.body}
+                onChange={onChange}
                 fontSize="10pt"
                 borderRadius={4}
                 placeholder="Text (optional)"
@@ -49,7 +49,7 @@ const TextInputs: React.FC<TextInputsProps> = ({ textInput, onChange, handleCrea
                 }}
             />
             <Flex justify="flex-end">
-                <Button height="34px" p="0 30px" disabled={false} isLoading={loading} loadingText="Posting" onClick={() => {}}>
+                <Button isDisabled={!textInputs.title} height="34px" p="0px 30px" isLoading={loading} loadingText="Posting" onClick={handleCreatePost}>
                     Post
                 </Button>
             </Flex>
