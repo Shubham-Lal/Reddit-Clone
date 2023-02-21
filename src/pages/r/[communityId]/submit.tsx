@@ -29,7 +29,7 @@ const SubmitPostPage: React.FC<SubmitPostPageProps> = ({ communityData }) => {
                                 Create a post
                             </Text>
                         </Box>
-                        <NewPostForm />
+                        <NewPostForm user={user} communityData={communityData} />
                     </>
                     <>About Component</>
                 </PageContent>
