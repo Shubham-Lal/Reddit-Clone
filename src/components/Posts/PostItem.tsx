@@ -7,6 +7,8 @@ import { FaReddit } from "react-icons/fa";
 import { IoArrowDownCircleOutline, IoArrowDownCircleSharp, IoArrowRedoOutline, IoArrowUpCircleOutline, IoArrowUpCircleSharp, IoBookmarkOutline } from "react-icons/io5";
 import moment from "moment";
 import { useState } from "react";
+import { RWebShare } from "react-web-share";
+import { Community } from "@/atoms/communitiesAtom";
 
 
 type PostItemProps = {
@@ -16,9 +18,10 @@ type PostItemProps = {
     onVote: () => {};
     onDelete: (post: Post) => Promise<boolean>;
     onSelectPost: () => void;
+    communityData: Community;
 };
 
-const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue, onVote, onDelete, onSelectPost }) => {
+const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue, onVote, onDelete, onSelectPost, communityData }) => {
     const [loadingImage, setLoadingImage] = useState(true);
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [error, setError] = useState(false);
@@ -98,7 +101,17 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
                     </Flex>
                     <Flex align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer">
                         <Icon as={IoArrowRedoOutline} mr={2} />
-                        <Text fontSize="9pt">Share</Text>
+                        {/* <Text fontSize="9pt">Share</Text> */}
+                        <RWebShare
+                            data={{
+                                text: `${post.title}`,
+                                url: `https://r-clone.vercel.app/r/${communityData.id}`,
+                                title: `Share this post from ${communityData.id}'s Reddit Community`
+                            }}
+                            onClick={() => console.log("Share Post")}
+                        >
+                            <Text fontSize="9pt">Share</Text>
+                        </RWebShare>
                     </Flex>
                     <Flex align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer">
                         <Icon as={IoBookmarkOutline} mr={2} />
