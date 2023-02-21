@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import Navbar from '../Navbar/Navbar';
 
@@ -9,7 +10,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
         <>
             <Navbar />
-            <main>{children}</main>
+            <Box pt={10}>
+                <main>{children}</main>
+            </Box>
         </>
     )
 }

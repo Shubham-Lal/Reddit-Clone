@@ -131,9 +131,9 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user, communityData }) => {
                 await updateDoc(postDocRef, {
                     imageURL: downloadURL,
                 });
-                // STEP 4:
-                router.back();
             }
+            // STEP 4:
+            router.back();
         }
         catch (error: any) {
             console.log(error.message);

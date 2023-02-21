@@ -8,7 +8,7 @@ const Directory: React.FC = () => {
 
     return (
         <Menu>
-            <MenuButton mr={2} ml={{ base: 1, md: 2 }} cursor="pointer" padding="0 6px" borderRadius={4} _hover={{ outline: "1px solid", outlineColor: "gray.200" }}>
+            <MenuButton mr={2} ml={2} outlineColor="gray.50" cursor="pointer" padding="0 6px" borderRadius={4} _hover={{ outline: "1px solid", outlineColor: "gray.300" }}>
                 <Flex align="center" justify="space-between" width={{ base: "auto", lg: "200px" }}>
                     <Flex align="center">
                         <Icon as={TiHome} fontSize={20} mr={{ base: 1, md: 2 }} />

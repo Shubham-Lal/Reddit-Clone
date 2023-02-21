@@ -32,7 +32,7 @@ const Icons: React.FC = () => {
                 >
                     <Icon as={IoFilterCircleOutline} fontSize={23} />
                 </Flex>
-                <Flex
+                {/* <Flex
                     mr={1.5}
                     ml={1.5}
                     padding={1}
@@ -41,6 +41,16 @@ const Icons: React.FC = () => {
                     _hover={{ bg: "gray.200" }}
                 >
                     <Icon as={IoVideocamOutline} fontSize={22} />
+                </Flex> */}
+                <Flex
+                    mr={1.5}
+                    ml={1.5}
+                    padding={1}
+                    cursor="pointer"
+                    borderRadius={4}
+                    _hover={{ bg: "gray.200" }}
+                >
+                    <Icon as={IoNotificationsOutline} fontSize={20} />
                 </Flex>
             </Flex>
             <>
@@ -62,8 +72,18 @@ const Icons: React.FC = () => {
                     borderRadius={4}
                     _hover={{ bg: "gray.200" }}
                 >
-                    <Icon as={IoNotificationsOutline} fontSize={20} />
+                    <Icon as={IoVideocamOutline} fontSize={22} />
                 </Flex>
+                {/* <Flex
+                    mr={1.5}
+                    ml={1.5}
+                    padding={1}
+                    cursor="pointer"
+                    borderRadius={4}
+                    _hover={{ bg: "gray.200" }}
+                >
+                    <Icon as={IoNotificationsOutline} fontSize={20} />
+                </Flex> */}
                 <Flex
                     display={{ base: "none", md: "flex" }}
                     mr={1.5}

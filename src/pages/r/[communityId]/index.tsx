@@ -33,7 +33,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
             <PageContent>
                 <>
                     <CreatePostLink />
-                    <Posts communityData={communityData}/>
+                    <Posts communityData={communityData} />
                 </>
                 <>
 

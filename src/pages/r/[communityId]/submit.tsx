@@ -31,7 +31,9 @@ const SubmitPostPage: React.FC<SubmitPostPageProps> = ({ communityData }) => {
                         </Box>
                         <NewPostForm user={user} communityData={communityData} />
                     </>
-                    <>About Component</>
+                    <>
+                        About Component
+                    </>
                 </PageContent>
             </>
         )
