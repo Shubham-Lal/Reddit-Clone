@@ -60,7 +60,19 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
         }))
     };
 
-    const onSelectImage = () => { };
+    const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const reader = new FileReader();
+
+        if (!event.target.files?.[0]) return;
+        reader.readAsDataURL(event.target.files[0]);
+
+        reader.onload = (readerEvent) => {
+            if (readerEvent.target?.result) {
+                setSelectedFile(readerEvent.target.result as string);
+            }
+        }
+
+    };
 
     const handleCreatePost = async () => { };
 
@@ -73,7 +85,7 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
             </Flex>
             <Flex p={4}>
                 {selectedTab === "Post" && <TextInputs textInputs={textInputs} onChange={onTextChange} handleCreatePost={handleCreatePost} loading={loading} />}
-                {selectedTab === "Images & Video" && <ImageUpload />}
+                {selectedTab === "Images & Video" && <ImageUpload selectedFile={selectedFile} setSelectedFile={setSelectedFile} onSelectImage={onSelectImage} setSelectedTab={setSelectedTab} />}
                 {selectedTab === "Links" && <LinksPostForm />}
                 {selectedTab === "Poll" && <PollsPostForm />}
                 {selectedTab === "Talk" && <TalkPostForm />}
