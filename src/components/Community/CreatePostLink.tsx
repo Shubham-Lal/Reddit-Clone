@@ -16,7 +16,7 @@ const CreatePostLink: React.FC = () => {
     const setAuthModalState = useSetRecoilState(authModalState);
 
     const onClick = () => {
-        if(!user) {
+        if (!user) {
             setAuthModalState({ open: true, view: "login" });
             return;
         }
@@ -65,8 +65,15 @@ const CreatePostLink: React.FC = () => {
                 mr={4}
                 color="gray.400"
                 cursor="pointer"
+                onClick={onClick}
             />
-            <Icon as={BsLink45Deg} fontSize={24} color="gray.400" cursor="pointer" />
+            <Icon 
+                as={BsLink45Deg} 
+                fontSize={24} 
+                color="gray.400" 
+                cursor="pointer"
+                onClick={onClick}
+            />
         </Flex>
     );
 }
