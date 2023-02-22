@@ -5,7 +5,7 @@ type PageContentProps = {
     children: ReactNode
 };
 
-const PageContent:React.FC<PageContentProps> = ({ children }) => {
+const PageContent: React.FC<PageContentProps> = ({ children }) => {
 
     return (
         <Flex justify="center" padding="16px 0">

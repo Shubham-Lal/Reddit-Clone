@@ -16,7 +16,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ selectedFile, setSelectedFile
         <Flex direction="column" justify="center" align="center" width="100%">
             {selectedFile
                 ? <>
-                    <Image src={selectedFile} maxWidth={{ base: "auto", sm: "400px" }} maxHeight={{ base: "auto", sm: "400px" }} alt="Preview File"/>
+                    <Image src={selectedFile} maxWidth={{ base: "auto", sm: "400px" }} maxHeight={{ base: "auto", sm: "400px" }} alt="Preview File" />
                     <Stack direction="row" mt={4}>
                         <Button height="28px" onClick={() => setSelectedTab("Post")}>
                             Back to Post
@@ -31,7 +31,14 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ selectedFile, setSelectedFile
                     <Button variant="outline" height="28px" onClick={() => selectedFileRef.current?.click()}>
                         Upload
                     </Button>
-                    <input type="file" ref={selectedFileRef} onChange={onSelectImage} hidden />
+                    <input
+                        id="file-upload"
+                        type="file"
+                        accept="image/x-png, image/gif, image/jpeg"
+                        hidden
+                        ref={selectedFileRef}
+                        onChange={onSelectImage}
+                    />
                 </Flex>
             }
         </Flex>

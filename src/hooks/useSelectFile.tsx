@@ -3,11 +3,13 @@ import Compressor from 'compressorjs';
 
 const useSelectFile = () => {
     const [selectedFile, setSelectedFile] = useState<string>();
+    const [imageUploaded, setImageUploaded] = useState(false);
 
     const onSelectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
         const reader = new FileReader();
 
         if (!event.target.files?.[0]) return;
+        setImageUploaded(false);
         const image = event.target.files[0];
         if (image.size < 1048487) {
             reader.readAsDataURL(image);
@@ -32,7 +34,9 @@ const useSelectFile = () => {
     return {
         selectedFile,
         setSelectedFile,
-        onSelectFile
+        onSelectFile,
+        imageUploaded,
+        setImageUploaded
     }
 }
 export default useSelectFile;

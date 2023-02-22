@@ -95,11 +95,11 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
                     )}
                 </Stack>
                 <Flex ml={1} mb={0.5} color="gray.500" >
-                    <Flex align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer">
+                    <Flex userSelect="none" align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer">
                         <Icon as={BsChat} mr={2} />
                         <Text fontSize="9pt">{post.numberOfComments}</Text>
                     </Flex>
-                    <Flex align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer">
+                    <Flex userSelect="none" align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer">
                         <Icon as={IoArrowRedoOutline} mr={2} />
                         {/* <Text fontSize="9pt">Share</Text> */}
                         <RWebShare
@@ -113,12 +113,12 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
                             <Text fontSize="9pt">Share</Text>
                         </RWebShare>
                     </Flex>
-                    <Flex align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer">
+                    <Flex userSelect="none" align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer">
                         <Icon as={IoBookmarkOutline} mr={2} />
                         <Text fontSize="9pt">Save</Text>
                     </Flex>
                     {userIsCreator && (
-                        <Flex align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer" onClick={handleDelete}>
+                        <Flex  userSelect="none" align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer" onClick={handleDelete}>
                             {loadingDelete ? (
                                 <Spinner size="sm" />
                             ) : (<>

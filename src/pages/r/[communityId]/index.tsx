@@ -6,13 +6,14 @@ import safeJsonStringify from "safe-json-stringify";
 import NotFound from "../../../components/Community/NotFound";
 import CommunitySEO from "../../../pages/seo-community";
 import SEO from "../../../pages/seo";
-import Header from "@/components/Community/Header";
+import Header from "../../../components/Community/Header";
 import PageContent from "../../../components/Layout/PageContent";
 import CreatePostLink from "../../../components/Community/CreatePostLink";
 import Posts from "../../../components/Posts/Posts";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
-import About from "@/components/Community/About";
+import About from "../../../components/Community/About";
+import AboutMobile from "../../../components/Community/AboutMobile";
 
 type CommunityPageProps = {
     communityData: Community
@@ -43,6 +44,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
             <PageContent>
                 <>
                     <CreatePostLink />
+                    <AboutMobile communityData={communityData} />
                     <Posts communityData={communityData} />
                 </>
                 <>
