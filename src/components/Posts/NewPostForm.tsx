@@ -16,8 +16,8 @@ import { Community } from "../../atoms/communitiesAtom";
 import { addDoc, collection, serverTimestamp, Timestamp, updateDoc } from "firebase/firestore";
 import { firestore, storage } from "../../firebase/clientApp";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import Compressor from 'compressorjs';
 import React from "react";
+import useSelectFile from "../../hooks/useSelectFile";
 
 
 type NewPostFormProps = {
@@ -60,9 +60,11 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user, communityData }) => {
         title: "",
         body: ""
     });
-    const [selectedFile, setSelectedFile] = useState<string>();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
+
+    // Using Hooks for Global onSelectFile
+    const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile();
 
     const onTextChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { target: { name, value } } = event;
@@ -70,31 +72,6 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user, communityData }) => {
             ...prev,
             [name]: value,
         }))
-    };
-
-    const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const reader = new FileReader();
-
-        if (!event.target.files?.[0]) return;
-        const image = event.target.files[0];
-        if (image.size < 1048487) {
-            reader.readAsDataURL(image);
-        }
-        else {
-            new Compressor(image, {
-                quality: 0.6,
-                width: 900,
-                height: 500,
-                success: (res) => {
-                    reader.readAsDataURL(res);
-                },
-            });
-        }
-        reader.onload = (readerEvent) => {
-            if (readerEvent.target?.result) {
-                setSelectedFile(readerEvent.target.result as string);
-            }
-        }
     };
 
     const handleCreatePost = async () => {
@@ -155,7 +132,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user, communityData }) => {
             </Flex>
             <Flex p={4}>
                 {selectedTab === "Post" && <TextInputs textInputs={textInputs} onChange={onTextChange} handleCreatePost={handleCreatePost} loading={loading} />}
-                {selectedTab === "Images & Video" && <ImageUpload selectedFile={selectedFile} setSelectedFile={setSelectedFile} onSelectImage={onSelectImage} setSelectedTab={setSelectedTab} />}
+                {selectedTab === "Images & Video" && <ImageUpload selectedFile={selectedFile} setSelectedFile={setSelectedFile} onSelectImage={onSelectFile} setSelectedTab={setSelectedTab} />}
                 {selectedTab === "Links" && <LinksPostForm />}
                 {selectedTab === "Poll" && <PollsPostForm />}
                 {selectedTab === "Talk" && <TalkPostForm />}
