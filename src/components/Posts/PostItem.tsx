@@ -50,39 +50,23 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
     return (
         <Flex border="1px solid" borderColor="gray.300" bg="white" borderRadius={4} _hover={{ borderColor: "gray.400" }} onClick={onSelectPost}>
             <Flex direction="column" align="center" bg="gray.100" p={2} width="40px" borderRadius={4}>
-                {user ? <Icon
+                <Icon
                     as={userVoteValue === 1 ? IoArrowUpCircleSharp : IoArrowUpCircleOutline}
                     color={userVoteValue === 1 ? "brand.100" : "gray.400"}
                     fontSize={30}
                     onClick={() => onVote(post, 1, post.communityId)}
                     cursor="pointer"
                     _hover={{ color: "blue.200" }}
-                /> :
-                    <Icon
-                        as={IoArrowUpCircleOutline}
-                        color="gray.400"
-                        fontSize={30}
-                        cursor="pointer"
-                        _hover={{ color: "blue.200" }}
-                    />
-                }
+                />
                 <Text fontSize="10pt">{post.voteStatus}</Text>
-                {user ? <Icon
+                <Icon
                     as={userVoteValue === -1 ? IoArrowDownCircleSharp : IoArrowDownCircleOutline}
                     color={userVoteValue === -1 ? "#4379FF" : "gray.400"}
                     fontSize={30}
                     onClick={() => onVote(post, -1, post.communityId)}
                     cursor="pointer"
                     _hover={{ color: "blue.200" }}
-                /> :
-                    <Icon
-                        as={IoArrowDownCircleOutline}
-                        color="gray.400"
-                        fontSize={30}
-                        cursor="pointer"
-                        _hover={{ color: "blue.200" }}
-                    />
-                }
+                />
             </Flex>
             <Flex direction="column" width="100%">
                 {error && (
