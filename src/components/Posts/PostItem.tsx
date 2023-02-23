@@ -9,8 +9,6 @@ import moment from "moment";
 import { useState } from "react";
 import { RWebShare } from "react-web-share";
 import { Community } from "@/atoms/communitiesAtom";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase/clientApp";
 
 
 type PostItemProps = {
@@ -19,7 +17,7 @@ type PostItemProps = {
     userVoteValue?: number;
     onVote: (post: Post, vote: number, communityId: string) => void;
     onDelete: (post: Post) => Promise<boolean>;
-    onSelectPost: () => void;
+    onSelectPost?: (post: Post) => void;
     communityData: Community;
 };
 
@@ -27,7 +25,6 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
     const [loadingImage, setLoadingImage] = useState(true);
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [error, setError] = useState(false);
-    const [user] = useAuthState(auth);
 
     const handleDelete = async () => {
         setError(false);
@@ -48,7 +45,7 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
     }
 
     return (
-        <Flex border="1px solid" borderColor="gray.300" bg="white" borderRadius={4} _hover={{ borderColor: "gray.400" }} onClick={onSelectPost}>
+        <Flex border="1px solid" borderColor="gray.300" bg="white" borderRadius={4} _hover={{ borderColor: "gray.400" }}>
             <Flex direction="column" align="center" bg="gray.100" p={2} width="40px" borderRadius={4}>
                 <Icon
                     as={userVoteValue === 1 ? IoArrowUpCircleSharp : IoArrowUpCircleOutline}
@@ -82,12 +79,14 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
                         <Text pl={1} color="gray.500">{moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}</Text>
                     </Stack>
                     <Divider />
-                    <Text fontSize="12pt" fontWeight={600} cursor="pointer">
+                    <Text fontSize="12pt" fontWeight={600} cursor="pointer" onClick={() => onSelectPost && onSelectPost(post)}>
                         {post.title}
                     </Text>
-                    <Text fontSize="10pt">{post.body}</Text>
+                    <Text fontSize="10pt" onClick={() => onSelectPost && onSelectPost(post)}>
+                        {post.body}
+                    </Text>
                     {post.imageURL && (
-                        <Flex justify="center" align="center" p={2} cursor="pointer">
+                        <Flex justify="center" align="center" p={2} cursor="pointer" onClick={() => onSelectPost && onSelectPost(post)}>
                             {loadingImage && <Skeleton height="200px" width="100%" borderRadius={4} />}
                             <Image
                                 src={post.imageURL}
@@ -110,7 +109,7 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
                         <RWebShare
                             data={{
                                 text: `${post.title}`,
-                                url: `https://r-clone.vercel.app/r/${communityData.id}`,
+                                url: `https://r-clone.vercel.app/r/${communityData.id}/post/${post.id}`,
                                 title: `Share this post from ${communityData.id}'s Reddit Community`
                             }}
                             onClick={() => console.log("Share Post")}

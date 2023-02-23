@@ -18,4 +18,28 @@ const CommunitySEO: React.FC<CommunitySEOProps> = ({ CommunityData }) => {
         </Head>
     )
 }
+
+// export async function getServerSideProps(context: GetServerSidePropsContext) {
+//     // Get Community Data & pass it to Client
+//     try {
+//         const communityDocRef = doc(firestore, "communities", context.query.communityId as string);
+//         const communityDoc = await getDoc(communityDocRef);
+//         return {
+//             props: {
+//                 communityData: communityDoc.exists()
+//                     ? JSON.parse(
+//                         safeJsonStringify({
+//                             id: communityDoc.id,
+//                             ...communityDoc.data()
+//                         })
+//                     )
+//                     : ""
+//             }
+//         }
+//     }
+//     catch (error) {
+//         console.log(error);
+//     }
+// }
+
 export default CommunitySEO;

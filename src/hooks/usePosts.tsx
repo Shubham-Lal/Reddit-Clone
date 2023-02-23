@@ -7,12 +7,14 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect } from "react";
 import { communityState } from "../atoms/communitiesAtom";
 import { authModalState } from "../atoms/authModalAtom";
+import { useRouter } from "next/router";
 
 const usePosts = () => {
     const [user] = useAuthState(auth);
     const [postStateValue, setPostStateValue] = useRecoilState(postState);
     const currentCommunity = useRecoilValue(communityState).currentCommunity;
     const setAuthModalState = useSetRecoilState(authModalState);
+    const router = useRouter();
 
     // Vote Functionality of Post
     const onVote = async (post: Post, vote: number, communityId: string) => {
@@ -112,8 +114,12 @@ const usePosts = () => {
     };
 
     // Selecting a Post
-    const onSelectPost = () => {
-
+    const onSelectPost = (post: Post) => {
+        // setPostStateValue(prev => ({
+        //     ...prev,
+        //     selectedPost: post,
+        // }));
+        router.push(`/r/${post.communityId}/post/${post.id}`);
     };
 
     // Deleting a Post

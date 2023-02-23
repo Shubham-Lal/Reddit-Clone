@@ -58,7 +58,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
     };
 
     return (
-        <Box position="sticky" top="60px">
+        <Box position="sticky" top="58px">
             <Flex justify="space-between" align="center" bg="blue.400" color="white" p={3} borderRadius="4px 4px 0 0">
                 <Text fontSize="12pt">
                     About {communityData.id}
