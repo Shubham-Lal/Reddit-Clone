@@ -89,14 +89,6 @@ const usePosts = () => {
                     voteChange = 2 * vote;
                 }
             }
-            // Update our Post Document
-            const postRef = doc(firestore, "posts", post.id!);
-            batch.update(postRef, {
-                voteStatus: voteStatus + voteChange
-            });
-
-            await batch.commit();
-
             const postIndex = postStateValue.posts.findIndex(
                 (item) => item.id === post.id
             );
@@ -107,6 +99,21 @@ const usePosts = () => {
                 posts: updatedPosts,
                 postVotes: updatedPostVotes,
             }));
+
+            if (postStateValue.selectedPost) {
+                setPostStateValue(prev => ({
+                    ...prev,
+                    selectedPost: updatedPost,
+                }))
+            }
+
+            // Update our Post Document
+            const postRef = doc(firestore, "posts", post.id!);
+            batch.update(postRef, {
+                voteStatus: voteStatus + voteChange
+            });
+
+            await batch.commit();
         }
         catch (error: any) {
             console.log(error.message)
@@ -115,10 +122,10 @@ const usePosts = () => {
 
     // Selecting a Post
     const onSelectPost = (post: Post) => {
-        // setPostStateValue(prev => ({
-        //     ...prev,
-        //     selectedPost: post,
-        // }));
+        setPostStateValue(prev => ({
+            ...prev,
+            selectedPost: post,
+        }));
         router.push(`/r/${post.communityId}/post/${post.id}`);
     };
 

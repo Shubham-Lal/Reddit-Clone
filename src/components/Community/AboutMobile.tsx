@@ -15,16 +15,19 @@ import { useState } from "react";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { doc, updateDoc } from "firebase/firestore";
 import { useSetRecoilState } from "recoil";
+import { useRouter } from "next/router";
 
 
 type AboutProps = {
-    communityData: Community
+    communityData: Community;
+    singlePage?: boolean;
 };
 
-const About: React.FC<AboutProps> = ({ communityData }) => {
+const AboutMobile: React.FC<AboutProps> = ({ communityData, singlePage }) => {
     const [user] = useAuthState(auth);
     const [show, setShow] = useState(false);
     const selectedFileRef = useRef<HTMLInputElement>(null);
+    const router = useRouter();
 
     const { selectedFile, onSelectFile, imageUploaded, setImageUploaded } = useSelectFile();
     const [uploadingImage, setUploadingImage] = useState(false);
@@ -61,9 +64,17 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
     return (
         <Box width="100%" display={{ sm: "flex", md: "none" }} flexDirection="column" mb={4}>
             <Flex justify="space-between" align="center" bg="blue.400" color="white" p={3} borderRadius="4px 4px 0 0">
-                <Text fontSize="12pt">
-                    About {communityData.id}
-                </Text>
+                <Flex fontSize="11pt">
+                    <Text mr={1}>About</Text>
+                    <Text textDecoration={singlePage ? "underline" : "none"} cursor={singlePage ? "pointer" : "default"} onClick={() => {
+                        if(singlePage) {
+                            router.push(`/r/${communityData.id}`)
+                        }
+                    }}>
+                        {communityData.id}
+                    </Text>
+                    {singlePage && <Text ml={1}>Community</Text>}
+                </Flex>
                 {/* <Icon as={HiOutlineDotsHorizontal} cursor="pointer"/> */}
                 <Button variant="solid" onClick={() => setShow(prev => !prev)}>
                     {show ? "Hide" : "Show"}
@@ -165,4 +176,4 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
         </Box >
     )
 }
-export default About;
+export default AboutMobile;

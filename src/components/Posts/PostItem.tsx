@@ -1,6 +1,6 @@
 import { Post } from "../../atoms/postAtom";
 import { Alert, AlertIcon, Divider, Flex, Icon, Image, Skeleton, Spinner, Stack, Text, } from "@chakra-ui/react";
-import { NextRouter } from "next/router";
+import { useRouter } from "next/router";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsChat, BsDot } from "react-icons/bs";
 import { FaReddit } from "react-icons/fa";
@@ -25,6 +25,8 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
     const [loadingImage, setLoadingImage] = useState(true);
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [error, setError] = useState(false);
+    const singlePostPage = !onSelectPost;
+    const router = useRouter();
 
     const handleDelete = async () => {
         setError(false);
@@ -34,6 +36,9 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
             if (!success) {
                 throw new Error("Failed to delete post!");
             }
+            if(singlePostPage) {
+                router.push(`/r/${post.communityId}`);
+            }
         }
         catch (error: any) {
             console.log(error.message);
@@ -42,11 +47,24 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
         finally {
             setLoadingDelete(false);
         }
-    }
+    };
 
     return (
-        <Flex border="1px solid" borderColor="gray.300" bg="white" borderRadius={4} _hover={{ borderColor: "gray.400" }}>
-            <Flex direction="column" align="center" bg="gray.100" p={2} width="40px" borderRadius={4}>
+        <Flex
+            border="1px solid"
+            borderColor={singlePostPage ? "white" : "gray.300"}
+            bg="white"
+            borderRadius={singlePostPage ? "4px 4px 0px 0px" : "4px"}
+            _hover={{ borderColor: singlePostPage ? "none" : "gray.500" }}
+        >
+            <Flex
+                direction="column"
+                align="center"
+                bg={singlePostPage ? "none" : "gray.100"}
+                p={2}
+                width="40px"
+                borderRadius={singlePostPage ? "0" : "3px 0px 0px 3px"}
+            >
                 <Icon
                     as={userVoteValue === 1 ? IoArrowUpCircleSharp : IoArrowUpCircleOutline}
                     color={userVoteValue === 1 ? "brand.100" : "gray.400"}
@@ -79,14 +97,14 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
                         <Text pl={1} color="gray.500">{moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}</Text>
                     </Stack>
                     <Divider />
-                    <Text fontSize="12pt" fontWeight={600} cursor="pointer" onClick={() => onSelectPost && onSelectPost(post)}>
+                    <Text fontSize="12pt" fontWeight={600} cursor={singlePostPage ? "default" : "pointer"} onClick={() => onSelectPost && onSelectPost(post)}>
                         {post.title}
                     </Text>
-                    <Text fontSize="10pt" onClick={() => onSelectPost && onSelectPost(post)}>
+                    <Text fontSize="10pt" cursor={singlePostPage ? "default" : "pointer"} onClick={() => onSelectPost && onSelectPost(post)}>
                         {post.body}
                     </Text>
                     {post.imageURL && (
-                        <Flex justify="center" align="center" p={2} cursor="pointer" onClick={() => onSelectPost && onSelectPost(post)}>
+                        <Flex justify="center" align="center" p={2} cursor={singlePostPage ? "default" : "pointer"} onClick={() => onSelectPost && onSelectPost(post)}>
                             {loadingImage && <Skeleton height="200px" width="100%" borderRadius={4} />}
                             <Image
                                 src={post.imageURL}
