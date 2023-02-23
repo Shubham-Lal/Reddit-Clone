@@ -9,13 +9,15 @@ import moment from "moment";
 import { useState } from "react";
 import { RWebShare } from "react-web-share";
 import { Community } from "@/atoms/communitiesAtom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase/clientApp";
 
 
 type PostItemProps = {
     post: Post;
     userIsCreator: boolean;
     userVoteValue?: number;
-    onVote: () => {};
+    onVote: (post: Post, vote: number, communityId: string) => void;
     onDelete: (post: Post) => Promise<boolean>;
     onSelectPost: () => void;
     communityData: Community;
@@ -25,6 +27,7 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
     const [loadingImage, setLoadingImage] = useState(true);
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [error, setError] = useState(false);
+    const [user] = useAuthState(auth);
 
     const handleDelete = async () => {
         setError(false);
@@ -47,21 +50,39 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
     return (
         <Flex border="1px solid" borderColor="gray.300" bg="white" borderRadius={4} _hover={{ borderColor: "gray.400" }} onClick={onSelectPost}>
             <Flex direction="column" align="center" bg="gray.100" p={2} width="40px" borderRadius={4}>
-                <Icon
+                {user ? <Icon
                     as={userVoteValue === 1 ? IoArrowUpCircleSharp : IoArrowUpCircleOutline}
                     color={userVoteValue === 1 ? "brand.100" : "gray.400"}
-                    fontSize={22}
-                    onClick={onVote}
+                    fontSize={30}
+                    onClick={() => onVote(post, 1, post.communityId)}
                     cursor="pointer"
-                />
+                    _hover={{ color: "blue.200" }}
+                /> :
+                    <Icon
+                        as={IoArrowUpCircleOutline}
+                        color="gray.400"
+                        fontSize={30}
+                        cursor="pointer"
+                        _hover={{ color: "blue.200" }}
+                    />
+                }
                 <Text fontSize="10pt">{post.voteStatus}</Text>
-                <Icon
+                {user ? <Icon
                     as={userVoteValue === -1 ? IoArrowDownCircleSharp : IoArrowDownCircleOutline}
                     color={userVoteValue === -1 ? "#4379FF" : "gray.400"}
-                    fontSize={22}
-                    onClick={onVote}
+                    fontSize={30}
+                    onClick={() => onVote(post, -1, post.communityId)}
                     cursor="pointer"
-                />
+                    _hover={{ color: "blue.200" }}
+                /> :
+                    <Icon
+                        as={IoArrowDownCircleOutline}
+                        color="gray.400"
+                        fontSize={30}
+                        cursor="pointer"
+                        _hover={{ color: "blue.200" }}
+                    />
+                }
             </Flex>
             <Flex direction="column" width="100%">
                 {error && (
@@ -118,7 +139,7 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
                         <Text fontSize="9pt">Save</Text>
                     </Flex>
                     {userIsCreator && (
-                        <Flex  userSelect="none" align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer" onClick={handleDelete}>
+                        <Flex userSelect="none" align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer" onClick={handleDelete}>
                             {loadingDelete ? (
                                 <Spinner size="sm" />
                             ) : (<>

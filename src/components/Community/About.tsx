@@ -58,7 +58,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
     };
 
     return (
-        <Box position="sticky" top="58px">
+        <Box position="sticky" top="60px">
             <Flex justify="space-between" align="center" bg="blue.400" color="white" p={3} borderRadius="4px 4px 0 0">
                 <Text fontSize="12pt">
                     About {communityData.id}
@@ -89,11 +89,13 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
                                 Created {moment(new Date(communityData.createdAt?.seconds * 1000)).format("DD MMM, YYYY")}
                             </Text>}
                     </Flex>
-                    <Link href={`/r/${communityData.id}/submit`}>
-                        <Button mt={3} height="30px" width="100%">
-                            Create Post
-                        </Button>
-                    </Link>
+                    {user && (
+                        <Link href={`/r/${communityData.id}/submit`}>
+                            <Button mt={3} height="30px" width="100%">
+                                Create Post
+                            </Button>
+                        </Link>
+                    )}
                     {user?.uid === communityData.creatorId && (
                         <>
                             <Divider />

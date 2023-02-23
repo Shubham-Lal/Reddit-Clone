@@ -13,6 +13,23 @@ export type Post = {
     imageURL?: string;
     communityImageURL?: string;
     createdAt: Timestamp;
+    // id: string;
+    // communityId: string;
+    // communityImageURL?: string;
+    // creatorDisplayName: string;
+    // creatorId: string;
+    // title: string;
+    // body: string;
+    // numberOfComments: number;
+    // voteStatus: number;
+    // currentUserVoteStatus?: {
+    //     id: string;
+    //     voteValue: number;
+    // };
+    // imageURL?: string;
+    // postIdx?: number;
+    // createdAt: Timestamp;
+    // editedAt?: Timestamp;
 };
 
 export type PostVote = {
