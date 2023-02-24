@@ -8,13 +8,14 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import SEO from "../../seo";
 import NotFound from "../../../components/Community/NotFound";
 import { useRecoilValue } from "recoil";
+import Footer from "../../../components/Footer/Footer";
 
 
 const SubmitPostPage: React.FC = () => {
     const [user] = useAuthState(auth);
     const communityStateValue = useRecoilValue(communityState);
 
-    if (user) {
+    if (user && communityStateValue.currentCommunity) {
         return (
             <>
                 <CommunitySEO CommunityData={communityStateValue.currentCommunity!} />
@@ -31,6 +32,7 @@ const SubmitPostPage: React.FC = () => {
                         About Component
                     </>
                 </PageContent>
+                <Footer />
             </>
         )
     }
@@ -38,6 +40,7 @@ const SubmitPostPage: React.FC = () => {
         <>
             <SEO />
             <NotFound />
+            <Footer />
         </>
     )
 }

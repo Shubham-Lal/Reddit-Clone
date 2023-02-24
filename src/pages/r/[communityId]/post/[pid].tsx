@@ -1,6 +1,8 @@
 import { doc, getDoc } from "firebase/firestore";
 import { GetServerSidePropsContext } from "next";
 import { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useRouter } from "next/router";
 import safeJsonStringify from "safe-json-stringify";
 import About from "../../../../components/Community/About";
 import PostItem from "../../../../components/Posts/PostItem";
@@ -9,10 +11,9 @@ import { Community } from "../../../../atoms/communitiesAtom";
 import PageContent from "../../../../components/Layout/PageContent";
 import { auth, firestore } from "../../../../firebase/clientApp";
 import PostSEO from "../../../seo-post";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useRouter } from "next/router";
-import { Post } from "@/atoms/postAtom";
-import AboutMobile from "@/components/Community/AboutMobile";
+import { Post } from "../../../../atoms/postAtom";
+import AboutMobile from "../../../../components/Community/AboutMobile";
+import Footer from "../../../../components/Footer/Footer";
 
 type PostPageProps = {
     communityData: Community;
@@ -102,6 +103,7 @@ const PostPage: React.FC<PostPageProps> = ({ communityData }) => {
                     <About communityData={communityData} />
                 </>
             </PageContent>
+            <Footer />
         </>
     )
 }

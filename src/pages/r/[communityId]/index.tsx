@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import About from "../../../components/Community/About";
 import AboutMobile from "../../../components/Community/AboutMobile";
+import Footer from "../../../components/Footer/Footer";
 
 type CommunityPageProps = {
     communityData: Community
@@ -33,6 +34,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
             <>
                 <SEO />
                 <NotFound />
+                <Footer />
             </>
         )
     }
@@ -51,6 +53,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
                     <About communityData={communityData} />
                 </>
             </PageContent>
+            <Footer />
         </>
     )
 }

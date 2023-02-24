@@ -17,9 +17,13 @@ const Footer = () => {
             bottom={0}
             borderTopLeftRadius="50%"
             borderTopRightRadius="50%"
+            borderTop="1px solid"
+            borderColor="blue.500"
         >
             <Text mr={1}>Made with</Text>
-            <BsFillSuitHeartFill color="red" />
+            <Text color="blue.500">
+            <BsFillSuitHeartFill />
+            </Text>
             <Text ml={1}>by</Text>
             <Link href="https://shubhamlal.pages.dev">
                 <Text ml={1} color="#FF3C00">Shubham Lal</Text>

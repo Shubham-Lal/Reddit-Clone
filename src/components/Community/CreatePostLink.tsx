@@ -21,6 +21,7 @@ const CreatePostLink: React.FC = () => {
         setLoadingSubmit(true);
         if (!user) {
             setAuthModalState({ open: true, view: "login" });
+            setLoadingSubmit(false);
             return;
         }
         const { communityId } = router.query;
