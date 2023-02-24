@@ -15,6 +15,7 @@ import useCommunityData from "../../../../hooks/useCommunityData";
 import SEO from "../../../seo";
 import NotFound from "../../../../components/Community/NotFound";
 import Comments from "../../../../components/Posts/Comments/Comments";
+import { User } from "firebase/auth";
 
 
 // const PostPage: React.FC<PostPageProps> = () => {
@@ -67,13 +68,11 @@ const PostPage = () => {
                                 communityData={communityStateValue.currentCommunity}
                             />
                         }
-                        {postStateValue.selectedPost && (
-                            <Comments
-                                user={user!}
-                                selectedPost={postStateValue.selectedPost}
-                                communityId={postStateValue.selectedPost.communityId}
-                            />
-                        )}
+                        <Comments
+                            user={user as User}
+                            selectedPost={postStateValue.selectedPost}
+                            communityId={postStateValue.selectedPost?.communityId as string}
+                        />
                     </>
                     <>
                         <About communityData={communityStateValue.currentCommunity} />

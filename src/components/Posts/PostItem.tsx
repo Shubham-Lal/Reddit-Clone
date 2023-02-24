@@ -117,7 +117,7 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
                     )}
                 </Stack>
                 <Flex ml={1} mb={0.5} color="gray.500" >
-                    <Flex userSelect="none" align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer">
+                    <Flex userSelect="none" align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer" onClick={() => onSelectPost && onSelectPost(post)}>
                         <Icon as={BsChat} mr={2} />
                         <Text fontSize="9pt">{post.numberOfComments}</Text>
                     </Flex>

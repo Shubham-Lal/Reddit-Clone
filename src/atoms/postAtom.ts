@@ -8,17 +8,11 @@ export type Post = {
     creatorDisplayName: string;
     creatorId: string;
     title: string;
-    body: string;
+    body: string; 
     numberOfComments: number;
     voteStatus: number;
-    currentUserVoteStatus?: {
-        id: string;
-        voteValue: number;
-    };
     imageURL?: string;
-    postIdx?: number;
     createdAt: Timestamp;
-    editedAt?: Timestamp;
 };
 
 export type PostVote = {

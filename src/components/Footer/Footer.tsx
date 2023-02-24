@@ -26,7 +26,7 @@ const Footer = () => {
             </Text>
             <Text ml={1}>by</Text>
             <Link href="https://shubhamlal.pages.dev">
-                <Text ml={1} color="#FF3C00">Shubham Lal</Text>
+                <Text ml={1} color="#FF3C00" textDecoration="underline">Shubham Lal</Text>
             </Link>
         </Flex>
     )
