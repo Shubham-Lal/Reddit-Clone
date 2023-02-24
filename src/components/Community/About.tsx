@@ -15,15 +15,18 @@ import { useState } from "react";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { doc, updateDoc } from "firebase/firestore";
 import { useSetRecoilState } from "recoil";
+import useCommunityData from "@/hooks/useCommunityData";
 
 
 type AboutProps = {
-    communityData: Community
+    communityData: Community;
+    onSubmitPage?: boolean;
 };
 
-const About: React.FC<AboutProps> = ({ communityData }) => {
+const About: React.FC<AboutProps> = ({ communityData, onSubmitPage }) => {
     const [user] = useAuthState(auth);
     const selectedFileRef = useRef<HTMLInputElement>(null);
+    const { communityStateValue } = useCommunityData();
 
     const { selectedFile, onSelectFile, imageUploaded, setImageUploaded } = useSelectFile();
     const [uploadingImage, setUploadingImage] = useState(false);
@@ -89,7 +92,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
                                 Created {moment(new Date(communityData.createdAt?.seconds * 1000)).format("DD MMM, YYYY")}
                             </Text>}
                     </Flex>
-                    {user && (
+                    {user && !onSubmitPage && (
                         <Link href={`/r/${communityData.id}/submit`}>
                             <Button mt={3} height="30px" width="100%">
                                 Create Post

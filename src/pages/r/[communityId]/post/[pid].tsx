@@ -1,28 +1,26 @@
 import { doc, getDoc } from "firebase/firestore";
-import { GetServerSidePropsContext } from "next";
 import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/router";
-import safeJsonStringify from "safe-json-stringify";
 import About from "../../../../components/Community/About";
 import PostItem from "../../../../components/Posts/PostItem";
 import usePosts from "../../../../hooks/usePosts";
-import { Community } from "../../../../atoms/communitiesAtom";
 import PageContent from "../../../../components/Layout/PageContent";
 import { auth, firestore } from "../../../../firebase/clientApp";
 import PostSEO from "../../../seo-post";
 import { Post } from "../../../../atoms/postAtom";
 import AboutMobile from "../../../../components/Community/AboutMobile";
 import Footer from "../../../../components/Footer/Footer";
+import useCommunityData from "../../../../hooks/useCommunityData";
+import SEO from "@/pages/seo";
+import NotFound from "@/components/Community/NotFound";
 
-type PostPageProps = {
-    communityData: Community;
-}
 
-const PostPage: React.FC<PostPageProps> = ({ communityData }) => {
+// const PostPage: React.FC<PostPageProps> = () => {
+const PostPage = () => {
     const [user] = useAuthState(auth);
     const { postStateValue, setPostStateValue, onDeletePost, onVote } = usePosts();
-    // const setCommunityStateValue = useSetRecoilState(communityState);
+    const { communityStateValue } = useCommunityData();
 
     const router = useRouter();
 
@@ -80,56 +78,65 @@ const PostPage: React.FC<PostPageProps> = ({ communityData }) => {
         }
     }, [router.query, postStateValue.selectedPost]);
 
+    if (communityStateValue.currentCommunity) {
+        return (
+            <>
+                <PostSEO communityData={communityStateValue.currentCommunity} />
+                <AboutMobile communityData={communityStateValue.currentCommunity} singlePage={router.query && true} />
+                <PageContent>
+                    <>
+                        {postStateValue.selectedPost &&
+                            <PostItem
+                                post={postStateValue.selectedPost}
+                                onVote={onVote}
+                                onDelete={onDeletePost}
+                                userVoteValue={postStateValue.postVotes.find((item) =>
+                                    item.postId === postStateValue.selectedPost?.id
+                                )?.voteValue}
+                                userIsCreator={user?.uid === postStateValue.selectedPost?.creatorId}
+                                communityData={communityStateValue.currentCommunity}
+                            />
+                        }
+                        {/* Comments */}
+                    </>
+                    <>
+                        <About communityData={communityStateValue.currentCommunity} />
+                    </>
+                </PageContent>
+                <Footer />
+            </>
+        )
+    }
     return (
         <>
-            <PostSEO communityData={communityData} />
-            <AboutMobile communityData={communityData} singlePage={router.query && true} />
-            <PageContent>
-                <>
-                    {postStateValue.selectedPost &&
-                        <PostItem
-                            post={postStateValue.selectedPost}
-                            onVote={onVote}
-                            onDelete={onDeletePost}
-                            userVoteValue={postStateValue.postVotes.find((item) =>
-                                item.postId === postStateValue.selectedPost?.id
-                            )?.voteValue}
-                            userIsCreator={user?.uid === postStateValue.selectedPost?.creatorId}
-                            communityData={communityData}
-                        />
-                    }
-                </>
-                <>
-                    <About communityData={communityData} />
-                </>
-            </PageContent>
-            <Footer />
+            <SEO />
+            <NotFound />
         </>
     )
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-    // Get Community Data & pass it to Client
-    try {
-        const communityDocRef = doc(firestore, "communities", context.query.communityId as string);
-        const communityDoc = await getDoc(communityDocRef);
+// export async function getServerSideProps(context: GetServerSidePropsContext) {
+//     // Get Community Data & pass it to Client
+//     try {
+//         const communityDocRef = doc(firestore, "communities", context.query.communityId as string);
+//         const communityDoc = await getDoc(communityDocRef);
 
-        return {
-            props: {
-                communityData: communityDoc.exists()
-                    ? JSON.parse(
-                        safeJsonStringify({
-                            id: communityDoc.id,
-                            ...communityDoc.data()
-                        })
-                    )
-                    : ""
-            }
-        }
-    }
-    catch (error) {
-        console.log(error);
-    }
-}
+//         return {
+//             props: {
+//                 communityData: communityDoc.exists()
+//                     ? JSON.parse(
+//                         safeJsonStringify({
+//                             id: communityDoc.id,
+//                             ...communityDoc.data()
+//                         })
+//                     )
+//                     : ""
+//             }
+//         }
+//     }
+//     catch (error) {
+//         console.log(error);
+//     }
+// }
 
 export default PostPage;

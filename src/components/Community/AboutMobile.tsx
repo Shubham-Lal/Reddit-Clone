@@ -21,9 +21,10 @@ import { useRouter } from "next/router";
 type AboutProps = {
     communityData: Community;
     singlePage?: boolean;
+    onSubmitPage?: boolean;
 };
 
-const AboutMobile: React.FC<AboutProps> = ({ communityData, singlePage }) => {
+const AboutMobile: React.FC<AboutProps> = ({ communityData, singlePage, onSubmitPage }) => {
     const [user] = useAuthState(auth);
     const [show, setShow] = useState(false);
     const selectedFileRef = useRef<HTMLInputElement>(null);
@@ -67,7 +68,7 @@ const AboutMobile: React.FC<AboutProps> = ({ communityData, singlePage }) => {
                 <Flex fontSize="11pt">
                     <Text mr={1}>About</Text>
                     <Text textDecoration={singlePage ? "underline" : "none"} cursor={singlePage ? "pointer" : "default"} onClick={() => {
-                        if(singlePage) {
+                        if (singlePage) {
                             router.push(`/r/${communityData.id}`)
                         }
                     }}>
@@ -105,11 +106,13 @@ const AboutMobile: React.FC<AboutProps> = ({ communityData, singlePage }) => {
                                     Created {moment(new Date(communityData.createdAt?.seconds * 1000)).format("DD MMM, YYYY")}
                                 </Text>}
                         </Flex>
-                        <Link href={`/r/${communityData.id}/submit`}>
-                            <Button mt={3} height="30px" width="100%">
-                                Create Post
-                            </Button>
-                        </Link>
+                        {!onSubmitPage && (
+                            <Link href={`/r/${communityData.id}/submit`}>
+                                <Button mt={3} height="30px" width="100%">
+                                    Create Post
+                                </Button>
+                            </Link>
+                        )}
                         {user?.uid === communityData.creatorId && (
                             <>
                                 <Divider />

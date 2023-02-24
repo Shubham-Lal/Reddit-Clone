@@ -9,16 +9,21 @@ import SEO from "../../seo";
 import NotFound from "../../../components/Community/NotFound";
 import { useRecoilValue } from "recoil";
 import Footer from "../../../components/Footer/Footer";
+import About from "../../../components/Community/About";
+import useCommunityData from "../../../hooks/useCommunityData";
+import AboutMobile from "@/components/Community/AboutMobile";
 
 
 const SubmitPostPage: React.FC = () => {
     const [user] = useAuthState(auth);
-    const communityStateValue = useRecoilValue(communityState);
+    // const communityStateValue = useRecoilValue(communityState);
+    const { communityStateValue } = useCommunityData();
 
     if (user && communityStateValue.currentCommunity) {
         return (
             <>
                 <CommunitySEO CommunityData={communityStateValue.currentCommunity!} />
+                <AboutMobile communityData={communityStateValue.currentCommunity} singlePage={true} onSubmitPage={true}/>
                 <PageContent>
                     <>
                         <Box p="14px 0" borderBottom="1px solid" borderColor="white">
@@ -29,7 +34,7 @@ const SubmitPostPage: React.FC = () => {
                         <NewPostForm user={user} communityData={communityStateValue.currentCommunity!} />
                     </>
                     <>
-                        About Component
+                        <About communityData={communityStateValue.currentCommunity} onSubmitPage={true}/>
                     </>
                 </PageContent>
                 <Footer />
