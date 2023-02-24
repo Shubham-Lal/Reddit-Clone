@@ -17,7 +17,17 @@ const Navbar: React.FC = () => {
 
     return (
         <>
-            <Flex as="header" position="fixed" width="100%" zIndex={99} bg="white" height="44px" padding="6px 12px" justify={{ md: "space-between" }} >
+            <Flex
+                as="header"
+                position="fixed"
+                width="100%"
+                zIndex={99}
+                bg="white"
+                height="44px"
+                padding="6px 12px"
+                justify={{ md: "space-between" }}
+                boxShadow="0px 0px 5px 5px #E0E0E0"
+            >
                 {/* () => { window.location.href = '/' }  <-- Can be used for routing too but refreshes the page */}
                 <Flex align="center" width={{ base: "40px", md: "auto" }} mr={{ base: 0, md: 2 }} cursor="pointer" onClick={onClick}>
                     <Image src="/images/redditFace.svg" alt="reddit-logo" height="30px" />

@@ -12,8 +12,9 @@ import { Post } from "../../../../atoms/postAtom";
 import AboutMobile from "../../../../components/Community/AboutMobile";
 import Footer from "../../../../components/Footer/Footer";
 import useCommunityData from "../../../../hooks/useCommunityData";
-import SEO from "@/pages/seo";
-import NotFound from "@/components/Community/NotFound";
+import SEO from "../../../seo";
+import NotFound from "../../../../components/Community/NotFound";
+import Comments from "../../../../components/Posts/Comments/Comments";
 
 
 // const PostPage: React.FC<PostPageProps> = () => {
@@ -21,38 +22,7 @@ const PostPage = () => {
     const [user] = useAuthState(auth);
     const { postStateValue, setPostStateValue, onDeletePost, onVote } = usePosts();
     const { communityStateValue } = useCommunityData();
-
     const router = useRouter();
-
-    //     const myFetchPostFun = async () => {
-    //         const postsQuery = query(
-    //             collection(firestore, `posts`),
-    //             where("communityId", "==", communityData.id)
-    //         );
-    //         const postDocs = await getDocs(postsQuery);
-    //         const posts = postDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    //         const post = posts.filter(item => item.id === router.query.pid);
-    //         const removeArr = post.at(0);
-    //         selectPost(removeArr as any);
-    //     }
-
-    // const selectPost = (post: Post) => {
-    //     setPostStateValue(prev => ({
-    //         ...prev,
-    //         selectedPost: post,
-    //     }));
-    // }
-
-    //     useEffect(() => {
-    //         myFetchPostFun();
-    //     }, []);
-
-    //     useEffect(() => {
-    //         setCommunityStateValue(prev => ({
-    //             ...prev,
-    //             currentCommunity: communityData,
-    //         }))
-    //     }, []);
 
     const fetchPost = async (postId: string) => {
         try {
@@ -97,7 +67,13 @@ const PostPage = () => {
                                 communityData={communityStateValue.currentCommunity}
                             />
                         }
-                        {/* Comments */}
+                        {postStateValue.selectedPost && (
+                            <Comments
+                                user={user!}
+                                selectedPost={postStateValue.selectedPost}
+                                communityId={postStateValue.selectedPost.communityId}
+                            />
+                        )}
                     </>
                     <>
                         <About communityData={communityStateValue.currentCommunity} />
@@ -114,29 +90,5 @@ const PostPage = () => {
         </>
     )
 }
-
-// export async function getServerSideProps(context: GetServerSidePropsContext) {
-//     // Get Community Data & pass it to Client
-//     try {
-//         const communityDocRef = doc(firestore, "communities", context.query.communityId as string);
-//         const communityDoc = await getDoc(communityDocRef);
-
-//         return {
-//             props: {
-//                 communityData: communityDoc.exists()
-//                     ? JSON.parse(
-//                         safeJsonStringify({
-//                             id: communityDoc.id,
-//                             ...communityDoc.data()
-//                         })
-//                     )
-//                     : ""
-//             }
-//         }
-//     }
-//     catch (error) {
-//         console.log(error);
-//     }
-// }
 
 export default PostPage;
