@@ -19,10 +19,10 @@ const Footer = () => {
             borderTopRightRadius="50%"
         >
             <Text mr={1}>Made with</Text>
-            <BsFillSuitHeartFill color="#FF3C00" />
+            <BsFillSuitHeartFill color="red" />
             <Text ml={1}>by</Text>
             <Link href="https://shubhamlal.pages.dev">
-                <Text ml={1} color="blue.500">Shubham Lal</Text>
+                <Text ml={1} color="#FF3C00">Shubham Lal</Text>
             </Link>
         </Flex>
     )
