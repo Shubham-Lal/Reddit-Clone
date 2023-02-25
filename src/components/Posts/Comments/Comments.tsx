@@ -2,7 +2,7 @@ import { Post, postState } from "../../../atoms/postAtom";
 import { firestore } from "../../../firebase/clientApp";
 import { Box, Divider, Flex, SkeletonCircle, SkeletonText, Stack, Text } from "@chakra-ui/react";
 import { User } from "firebase/auth";
-import { collection, doc, increment, serverTimestamp, Timestamp, writeBatch } from "firebase/firestore";
+import { collection, doc, getDocs, increment, orderBy, query, serverTimestamp, Timestamp, where, writeBatch } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import CommentInput from "./CommentInput";
 import { useSetRecoilState } from "recoil";
@@ -19,7 +19,7 @@ type CommentsProps = {
 const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) => {
     const [commentText, setCommentText] = useState("");
     const [comments, setComments] = useState<Comment[]>([]);
-    const [fetchLoading, setFetchLoading] = useState(false);
+    const [fetchLoading, setFetchLoading] = useState(true);
     const [createLoading, setCreateLoading] = useState(false);
     const setPostState = useSetRecoilState(postState);
 
@@ -87,32 +87,58 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
     };
 
     const getPostComment = async () => {
+        try {
+            const commentsQuery = query(
+                collection(firestore, "comments"),
+                where("postId", "==", selectedPost?.id),
+                orderBy("createdAt", "desc")
+            );
 
+            const commentDocs = getDocs(commentsQuery);
+            const comments = (await commentDocs).docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+
+            setComments(comments as Comment[]);
+        }
+        catch (error: any) {
+            console.log(error.message)
+        }
+        finally {
+            setFetchLoading(false);
+        }
     };
 
     useEffect(() => {
+        if (!selectedPost) return;
         getPostComment();
-    }, []);
+    }, [selectedPost]);
 
     return (
         <Box bg="white" borderRadius="0px 0px 4px 4px" p={2}>
             <Divider />
             <Flex direction="column" pl={10} pr={4} mb={6} fontSize="10pt" width="100%">
-                <CommentInput
-                    commentText={commentText}
-                    setCommentText={setCommentText}
-                    user={user}
-                    createLoading={createLoading}
-                    onCreateComment={onCreateComments}
-                />
+                {!fetchLoading && (
+                    <CommentInput
+                        commentText={commentText}
+                        setCommentText={setCommentText}
+                        user={user}
+                        createLoading={createLoading}
+                        onCreateComment={onCreateComments}
+                    />
+                )}
             </Flex>
             <Stack spacing={6} p={2}>
                 {fetchLoading ? (
                     <>
                         {[0, 1, 2].map((item) => (
                             <Box key={item} padding="6" bg="white">
-                                <SkeletonCircle size="10" />
-                                <SkeletonText mt="4" noOfLines={2} spacing="4" />
+                                <Flex direction="row">
+                                    <SkeletonCircle size="10" />
+                                    <SkeletonText width="100px" mt={2} ml={2} noOfLines={1} />
+                                </Flex>
+                                <SkeletonText mt="1" noOfLines={2} spacing="4" />
                             </Box>
                         ))}
                     </>
