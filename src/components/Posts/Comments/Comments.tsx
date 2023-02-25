@@ -21,6 +21,7 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
     const [comments, setComments] = useState<Comment[]>([]);
     const [fetchLoading, setFetchLoading] = useState(true);
     const [createLoading, setCreateLoading] = useState(false);
+    const [loadingDeleteId, setLoadingDeleteId] = useState("");
     const setPostState = useSetRecoilState(postState);
 
     const onCreateComments = async () => {
@@ -78,11 +79,30 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
         // Step 1) Delete a Comment Document in Firebase Database
         // Step 2) Decrement 1 on the Post's Number of Comments
         // Step 3) Update Client's recoil state
+        setLoadingDeleteId(comment.id);
         try {
-
+            const batch = writeBatch(firestore);
+            const commentDocRef = doc(firestore, "comments", comment.id);
+            batch.delete(commentDocRef);
+            const postDocRef = doc(firestore, "posts", selectedPost?.id!);
+            batch.update(postDocRef, {
+                numberOfComments: increment(-1)
+            });
+            await batch.commit();
+            setPostState((prev) => ({
+                ...prev,
+                selectedPost: {
+                    ...prev.selectedPost,
+                    numberOfComments: prev.selectedPost?.numberOfComments! - 1
+                } as Post
+            }));
+            setComments((prev) => prev.filter((item) => item.id !== comment.id));
         }
         catch (error: any) {
             console.log(error.message);
+        }
+        finally {
+            setLoadingDeleteId("");
         }
     };
 
@@ -164,7 +184,7 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
                                         key={item.id}
                                         comment={item}
                                         onDeleteComment={onDeleteComment}
-                                        loadingDelete={false}
+                                        loadingDelete={loadingDeleteId === item.id}
                                         userId={user?.uid}
                                     />
                                 ))}
