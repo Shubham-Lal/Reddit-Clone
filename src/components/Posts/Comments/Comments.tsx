@@ -1,11 +1,13 @@
 import { Post, postState } from "../../../atoms/postAtom";
 import { firestore } from "../../../firebase/clientApp";
-import { Box, Divider, Flex } from "@chakra-ui/react";
+import { Box, Divider, Flex, SkeletonCircle, SkeletonText, Stack, Text } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import { collection, doc, increment, serverTimestamp, Timestamp, writeBatch } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import CommentInput from "./CommentInput";
 import { useSetRecoilState } from "recoil";
+import { Comment } from "../../../atoms/postAtom";
+import CommentItem from "./CommentItem";
 
 
 type CommentsProps = {
@@ -13,17 +15,6 @@ type CommentsProps = {
     selectedPost: Post | null;
     communityId: string;
 };
-
-export type Comment = {
-    id: string;
-    creatorId: string;
-    creatorDisplayText: string;
-    communityId: string;
-    postId: string;
-    postTitle: string;
-    text: string;
-    createdAt: Timestamp;
-}
 
 const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) => {
     const [commentText, setCommentText] = useState("");
@@ -54,12 +45,14 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
 
             batch.set(commentDocRef, newComment);
 
+            newComment.createdAt = { seconds: Date.now() / 1000 } as Timestamp;
+
             // STEP 2:
             const postDocRef = doc(firestore, "posts", selectedPost?.id!);
             batch.update(postDocRef, {
                 numberOfComments: increment(1)
             });
-            
+
             await batch.commit();
 
             // STEP 3:
@@ -72,7 +65,7 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
                     numberOfComments: prev.selectedPost?.numberOfComments! + 1
                 } as Post
             }))
-        } 
+        }
         catch (error: any) {
             console.log(error.message);
         }
@@ -86,8 +79,8 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
         // Step 2) Decrement 1 on the Post's Number of Comments
         // Step 3) Update Client's recoil state
         try {
-            
-        } 
+
+        }
         catch (error: any) {
             console.log(error.message);
         }
@@ -113,6 +106,47 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
                     onCreateComment={onCreateComments}
                 />
             </Flex>
+            <Stack spacing={6} p={2}>
+                {fetchLoading ? (
+                    <>
+                        {[0, 1, 2].map((item) => (
+                            <Box key={item} padding="6" bg="white">
+                                <SkeletonCircle size="10" />
+                                <SkeletonText mt="4" noOfLines={2} spacing="4" />
+                            </Box>
+                        ))}
+                    </>
+                ) : (
+                    <>
+                        {comments.length === 0 ? (
+                            <Flex
+                                direction="column"
+                                justify="center"
+                                align="center"
+                                borderTop="1px solid"
+                                borderColor="gray.100"
+                                p={20}
+                            >
+                                <Text fontWeight={700} opacity={0.3}>
+                                    No Comments Yet
+                                </Text>
+                            </Flex>
+                        ) : (
+                            <>
+                                {comments.map((item: Comment) => (
+                                    <CommentItem
+                                        key={item.id}
+                                        comment={item}
+                                        onDeleteComment={onDeleteComment}
+                                        loadingDelete={false}
+                                        userId={user?.uid}
+                                    />
+                                ))}
+                            </>
+                        )}
+                    </>
+                )}
+            </Stack>
         </Box>
     )
 }

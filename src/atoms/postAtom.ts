@@ -15,6 +15,17 @@ export type Post = {
     createdAt: Timestamp;
 };
 
+export type Comment = {
+    id: string;
+    creatorId: string;
+    creatorDisplayText: string;
+    communityId: string;
+    postId: string;
+    postTitle: string;
+    text: string;
+    createdAt: Timestamp;
+};
+
 export type PostVote = {
     id: string;
     postId: string;

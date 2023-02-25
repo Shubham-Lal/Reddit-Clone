@@ -14,7 +14,7 @@ export default function Home() {
         <Flex>
           <Text mr={1}>Currently working on</Text>
           <Link href="/r/WeKnewHow">
-            <Text color="blue.500">Community</Text>
+            <Text color="blue.500" textDecoration="underline">Community</Text>
           </Link>
           <Text ml={1}>page.</Text>
         </Flex>
