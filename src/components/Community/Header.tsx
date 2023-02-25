@@ -39,7 +39,8 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
                             display={loadingImage ? "none" : "unset"}
                         />
                         : <>
-                            <Icon as={FaReddit} fontSize={64} position="relative" top={-3} color="#FF3C00" border="4px solid white" borderRadius="50%" />
+                            <Icon as={FaReddit} fontSize={64} position="relative" top={-3} color="blue.500" border="4px solid white" borderRadius="50%" />
+                            {/* <Icon as={FaReddit} fontSize={64} position="relative" top={-3} color="#FF3C00" border="4px solid white" borderRadius="50%" /> */}
                         </>
                     }
                     <Flex padding="10px 16px">
