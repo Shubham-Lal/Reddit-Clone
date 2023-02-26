@@ -64,7 +64,7 @@ const AboutMobile: React.FC<AboutProps> = ({ communityData, singlePage, onSubmit
 
     return (
         <Box width="100%" display={{ sm: "flex", md: "none" }} flexDirection="column" mb={4}>
-            <Flex justify="space-between" align="center" bg="blue.400" color="white" p={3} borderRadius="4px 4px 0 0">
+            <Flex justify="space-between" align="center" bg="blue.400" color="white" p={3} borderRadius={show ? "4px 4px 0 0": "4px"}>
                 <Flex fontSize="11pt">
                     <Text mr={1}>About</Text>
                     <Text textDecoration={singlePage ? "underline" : "none"} cursor={singlePage ? "pointer" : "default"} onClick={() => {

@@ -23,7 +23,9 @@ const Navbar: React.FC = () => {
                 height="44px"
                 padding="6px 12px"
                 justify={{ md: "space-between" }}
-                boxShadow="0px 0px 5px 5px #E0E0E0"
+                // boxShadow="0px 0px 5px 5px #E0E0E0"
+                borderBottom="1px solid"
+                borderBottomColor="gray.200"
             >
                 {/* () => { window.location.href = '/' }  <-- Can be used for routing too but refreshes the page */}
                 <Flex align="center" width={{ base: "40px", md: "auto" }} mr={{ base: 0, md: 2 }} cursor="pointer"

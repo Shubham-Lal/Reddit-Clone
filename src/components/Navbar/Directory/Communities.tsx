@@ -20,8 +20,14 @@ const Communities: React.FC<CommunitiesProps> = () => {
             <CreateCommunityModal open={open} handleClose={() => setOpen(false)} />
             <Box mt={3} mb={4}>
                 <Text pl={3} mb={1} fontSize="8pt" fontWeight={500} color="gray.500">
-                    MODERATING
+                    MY COMMUNITY
                 </Text>
+                <MenuItem width="100%" fontSize="10pt" _hover={{ bg: "gray.100" }} onClick={() => setOpen(true)}>
+                    <Flex align="center">
+                        <Icon as={GrAdd} fontSize={20} mr={2} />
+                        Create Community
+                    </Flex>
+                </MenuItem>
                 {mySnippets.filter(snippet => snippet.isModerator).map((snippet) => (
                     <MenuListItem
                         key={snippet.communityId}
@@ -35,14 +41,8 @@ const Communities: React.FC<CommunitiesProps> = () => {
             </Box>
             <Box mt={3} mb={4}>
                 <Text pl={3} mb={1} fontSize="8pt" fontWeight={500} color="gray.500">
-                    MY COMMUNITIES
+                    JOINED COMMUNITIES
                 </Text>
-                <MenuItem width="100%" fontSize="10pt" _hover={{ bg: "gray.100" }} onClick={() => setOpen(true)}>
-                    <Flex align="center">
-                        <Icon as={GrAdd} fontSize={20} mr={2} />
-                        Create Community
-                    </Flex>
-                </MenuItem>
                 {mySnippets.map((snippet) => (
                     <MenuListItem
                         key={snippet.communityId}
