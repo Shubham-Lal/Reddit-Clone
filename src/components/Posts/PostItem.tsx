@@ -8,7 +8,7 @@ import { IoArrowDownCircleOutline, IoArrowDownCircleSharp, IoArrowRedoOutline, I
 import moment from "moment";
 import { useState } from "react";
 import { RWebShare } from "react-web-share";
-import { Community } from "@/atoms/communitiesAtom";
+import Link from "next/link";
 
 
 type PostItemProps = {
@@ -18,10 +18,12 @@ type PostItemProps = {
     onVote: (post: Post, vote: number, communityId: string) => void;
     onDelete: (post: Post) => Promise<boolean>;
     onSelectPost?: (post: Post) => void;
-    communityData: Community;
+    communityId?: string;
+    shareEnabled: boolean;
+    homePage?: boolean;
 };
 
-const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue, onVote, onDelete, onSelectPost, communityData }) => {
+const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue, onVote, onDelete, onSelectPost, communityId, shareEnabled, homePage }) => {
     const [loadingImage, setLoadingImage] = useState(true);
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [error, setError] = useState(false);
@@ -36,7 +38,7 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
             if (!success) {
                 throw new Error("Failed to delete post!");
             }
-            if(singlePostPage) {
+            if (singlePostPage) {
                 router.push(`/r/${post.communityId}`);
             }
         }
@@ -91,10 +93,37 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
                     </Alert>
                 )}
                 <Stack spacing={1} p="10px">
+                    {homePage && (
+                        <Stack direction="row" spacing={0.6} align="center">
+                            <>
+                                {post.communityImageURL ? (
+                                    <Image
+                                        src={post.communityImageURL}
+                                        borderRadius="full"
+                                        boxSize="30px"
+                                        mr={2}
+                                        alt="Community Logo"
+                                    />
+                                ) : (
+                                    <Icon
+                                        as={FaReddit}
+                                        fontSize="18pt"
+                                        mr={1}
+                                        color="blue.500"
+                                    />
+                                )}
+                                <Link href={`r/${post.communityId}`}>
+                                    <Text fontSize="10pt" _hover={{ textDecoration: "underline" }}>
+                                        {`r/${post.communityId}`}
+                                    </Text>
+                                </Link>
+                            </>
+                        </Stack>
+                    )}
                     <Stack direction="row" spacing={0.6} align="center" fontSize="9pt">
-                        {/* Home Page Check */}
                         <Text>Posted by u/{post.creatorDisplayName}</Text>
-                        <Text pl={1} color="gray.500">{moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}</Text>
+                        <Icon as={BsDot} color="gray.500" fontSize={10}/>
+                        <Text color="gray.500">{moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}</Text>
                     </Stack>
                     <Divider />
                     <Text fontSize="12pt" fontWeight={600} cursor={singlePostPage ? "default" : "pointer"} onClick={() => onSelectPost && onSelectPost(post)}>
@@ -121,24 +150,28 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
                         <Icon as={BsChat} mr={2} />
                         <Text fontSize="9pt">{post.numberOfComments}</Text>
                     </Flex>
-                    <Flex userSelect="none" align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer">
-                        <Icon as={IoArrowRedoOutline} mr={2} />
-                        {/* <Text fontSize="9pt">Share</Text> */}
-                        <RWebShare
-                            data={{
-                                text: `${post.title}`,
-                                url: `https://r-clone.vercel.app/r/${communityData.id}/post/${post.id}`,
-                                title: `Share this post from ${communityData.id}'s Reddit Community`
-                            }}
-                            onClick={() => console.log("Share Post")}
-                        >
-                            <Text fontSize="9pt">Share</Text>
-                        </RWebShare>
-                    </Flex>
-                    <Flex userSelect="none" align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer">
-                        <Icon as={IoBookmarkOutline} mr={2} />
-                        <Text fontSize="9pt">Save</Text>
-                    </Flex>
+                    {shareEnabled && (
+                        <Flex userSelect="none" align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer">
+                            <Icon as={IoArrowRedoOutline} mr={2} />
+                            {/* <Text fontSize="9pt">Share</Text> */}
+                            <RWebShare
+                                data={{
+                                    text: `${post.title}`,
+                                    url: `https://r-clone.vercel.app/r/${communityId}/post/${post.id}`,
+                                    title: `Share this post from ${communityId}'s Reddit Community`
+                                }}
+                                onClick={() => console.log("Share Post")}
+                            >
+                                <Text fontSize="9pt">Share</Text>
+                            </RWebShare>
+                        </Flex>
+                    )}
+                    {post.imageURL && (
+                        <Flex userSelect="none" align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer">
+                            <Icon as={IoBookmarkOutline} mr={2} />
+                            <Text fontSize="9pt">Save</Text>
+                        </Flex>
+                    )}
                     {userIsCreator && (
                         <Flex userSelect="none" align="center" p="8px 10px" borderRadius={4} _hover={{ bg: "gray.200" }} cursor="pointer" onClick={handleDelete}>
                             {loadingDelete ? (

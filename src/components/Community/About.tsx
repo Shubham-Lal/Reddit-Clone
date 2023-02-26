@@ -15,7 +15,6 @@ import { useState } from "react";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { doc, updateDoc } from "firebase/firestore";
 import { useSetRecoilState } from "recoil";
-import useCommunityData from "@/hooks/useCommunityData";
 
 
 type AboutProps = {
@@ -26,7 +25,6 @@ type AboutProps = {
 const About: React.FC<AboutProps> = ({ communityData, onSubmitPage }) => {
     const [user] = useAuthState(auth);
     const selectedFileRef = useRef<HTMLInputElement>(null);
-    const { communityStateValue } = useCommunityData();
 
     const { selectedFile, onSelectFile, imageUploaded, setImageUploaded } = useSelectFile();
     const [uploadingImage, setUploadingImage] = useState(false);

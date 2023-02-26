@@ -65,7 +65,7 @@ const PostPage = () => {
                                     item.postId === postStateValue.selectedPost?.id
                                 )?.voteValue}
                                 userIsCreator={user?.uid === postStateValue.selectedPost?.creatorId}
-                                communityData={communityStateValue.currentCommunity}
+                                shareEnabled={false}
                             />
                         }
                         <Comments

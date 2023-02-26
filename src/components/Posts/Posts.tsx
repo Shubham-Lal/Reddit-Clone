@@ -64,7 +64,8 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
                             onSelectPost={onSelectPost}
                             onDelete={onDeletePost}
                             key={item.id}
-                            communityData={communityData}
+                            communityId={item.communityId}
+                            shareEnabled={true}
                         />
                     ))}
                 </Stack>
