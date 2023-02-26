@@ -7,11 +7,7 @@ import { communityState } from '../../../atoms/communitiesAtom';
 import MenuListItem from './MenuListItem';
 import { FaReddit } from 'react-icons/fa';
 
-type CommunitiesProps = {
-
-};
-
-const Communities: React.FC<CommunitiesProps> = () => {
+const Communities: React.FC = () => {
     const [open, setOpen] = useState(false);
     const mySnippets = useRecoilValue(communityState).mySnippets;
 

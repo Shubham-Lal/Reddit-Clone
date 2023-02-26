@@ -22,10 +22,10 @@ const Footer = () => {
         >
             <Text mr={1}>Made with</Text>
             <Text color="blue.500">
-            <BsFillSuitHeartFill />
+                <BsFillSuitHeartFill />
             </Text>
             <Text ml={1}>by</Text>
-            <Link href="https://shubhamlal.pages.dev">
+            <Link href="https://shubhamlal.pages.dev" target="_blank">
                 <Text ml={1} color="#FF3C00" textDecoration="underline">Shubham Lal</Text>
             </Link>
         </Flex>

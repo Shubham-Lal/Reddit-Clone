@@ -2,7 +2,6 @@ import SEO from './seo';
 import Footer from '../components/Footer/Footer';
 import { NextPage } from 'next';
 import PageContent from '../components/Layout/PageContent';
-import CreatePostLink from '../components/Community/CreatePostLink';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, firestore } from '../firebase/clientApp';
 import { useEffect, useState } from "react";
@@ -13,12 +12,17 @@ import PostLoader from '../components/Posts/PostLoader';
 import { Stack } from '@chakra-ui/react';
 import PostItem from '../components/Posts/PostItem';
 import useCommunityData from '../hooks/useCommunityData';
+import Recommendations from '../components/Community/Recommendations';
+import PersonalHome from '..//components/Community/PersonalHome';
+import PersonalHomeMobile from '../components/Community/PersonalHomeMobile';
+import RecommendationsMobile from '../components/Community/RecommendationsMobile';
+import { Community } from '@/atoms/communitiesAtom';
 
 const Home: NextPage = () => {
   const [user, loadingUser] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
   const { postStateValue, setPostStateValue, onSelectPost, onDeletePost, onVote } = usePosts();
-  const { communityStateValue } = useCommunityData();
+  const { communityStateValue, onJoinOrLeaveCommunity } = useCommunityData();
 
   const buildUserHomeFeed = async () => {
     setLoading(true);
@@ -122,12 +126,47 @@ const Home: NextPage = () => {
     } // Cleanup function
   }, [user, postStateValue.posts]);
 
+  const [communitites, setCommunities] = useState<Community[]>([]);
+  const [loadingR, setLoadingR] = useState(true);
+
+  const getCommunityRecommendation = async () => {
+    setLoadingR(true);
+    try {
+      const communityQuery = query(
+        collection(firestore, "communities"),
+        orderBy("numberOfMembers", "desc"),
+        limit(5)
+      );
+      const communityDocs = await getDocs(communityQuery);
+      const communities = communityDocs.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      setCommunities(communities as Community[]);
+    }
+    catch (error: any) {
+      console.log(error.message);
+    }
+    finally {
+      setLoadingR(false);
+    }
+  };
+
+  useEffect(() => {
+    getCommunityRecommendation();
+  }, []);
+
   return (
     <>
       <SEO />
       <PageContent>
         <>
-          <CreatePostLink />
+          <PersonalHomeMobile />
+          <RecommendationsMobile
+            loading={loading}
+            communitites={communitites}
+          />
           {loading ? (
             <PostLoader />
           ) : (
@@ -152,7 +191,11 @@ const Home: NextPage = () => {
           )}
         </>
         <>
-
+          <PersonalHome />
+          <Recommendations
+            loading={loading}
+            communitites={communitites}
+          />
         </>
       </PageContent>
       <Footer />

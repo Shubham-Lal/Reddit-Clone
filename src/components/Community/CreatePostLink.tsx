@@ -39,7 +39,7 @@ const CreatePostLink: React.FC = () => {
     return (
         <>
             {loadingSubmit ?
-                <Box boxShadow="sm" bg="white" mb={4} borderRadius={4}>
+                <Box boxShadow="sm" bg="white" mb={2} borderRadius={4}>
                     <Skeleton height="56px" />
                     <Flex align="center" justify="center">
                         <Spinner size="md" color="#FF3C00" position="absolute" mb="56px" />
@@ -55,7 +55,7 @@ const CreatePostLink: React.FC = () => {
                     border="1px solid"
                     borderColor="gray.300"
                     p={2}
-                    mb={4}
+                    mb={2}
                     display={loadingSubmit ? "none" : "flex"}
                 >
                     <Icon as={FaReddit} fontSize={36} color="gray.300" mr={4} />
