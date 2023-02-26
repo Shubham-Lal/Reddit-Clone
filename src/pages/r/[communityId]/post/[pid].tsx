@@ -49,7 +49,7 @@ const PostPage = () => {
         }
     }, [router.query, postStateValue.selectedPost]);
 
-    if (communityStateValue.currentCommunity) {
+    if (communityStateValue.currentCommunity && postStateValue.selectedPost?.createdAt) {
         return (
             <>
                 <PostSEO communityData={communityStateValue.currentCommunity} />
