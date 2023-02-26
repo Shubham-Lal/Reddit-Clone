@@ -150,7 +150,7 @@ const AboutMobile: React.FC<AboutProps> = ({ communityData, singlePage, onSubmit
                                             <Icon
                                                 as={FaReddit}
                                                 fontSize={40}
-                                                color="brand.100"
+                                                color="blue.500"
                                                 mr={2}
                                             />
                                         )}

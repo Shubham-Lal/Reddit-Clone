@@ -22,7 +22,7 @@ const MenuListItem: React.FC<MenuListItemProps> = ({ displayText, link, icon, ic
         >
             <Flex align="center">
                 {imageURL ? (
-                    <Image src={imageURL} borderRadius="full" boxSize="18px" mr={2} alt="Commenunity Picture" />
+                    <Image src={imageURL} borderRadius="full" boxSize="18px" mr={2} alt="Community Logo" />
                 ) : (
                     <Icon as={icon} fontSize={20} mr={2} color={iconColor} />
                 )}

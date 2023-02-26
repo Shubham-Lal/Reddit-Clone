@@ -123,7 +123,7 @@ const About: React.FC<AboutProps> = ({ communityData, onSubmitPage }) => {
                                             Change Community Image
                                         </Text>
                                     )}
-                                    {communityData.imageURL || selectedFile ? (
+                                    {selectedFile || communityData.imageURL ? (
                                         <Image
                                             src={selectedFile || communityData.imageURL}
                                             borderRadius="full"
@@ -134,7 +134,7 @@ const About: React.FC<AboutProps> = ({ communityData, onSubmitPage }) => {
                                         <Icon
                                             as={FaReddit}
                                             fontSize={40}
-                                            color="brand.100"
+                                            color="blue.500"
                                             mr={2}
                                         />
                                     )}

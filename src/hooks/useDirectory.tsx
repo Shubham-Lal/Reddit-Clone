@@ -30,7 +30,7 @@ const useDirectory = () => {
     };
 
     useEffect(() => {
-        const { currentCommunity } = communityStateValue
+        const { currentCommunity } = communityStateValue;
         if (currentCommunity) {
             setDirectoryState((prev) => ({
                 ...prev,
