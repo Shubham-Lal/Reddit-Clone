@@ -1,5 +1,6 @@
+import { defaultMenuItem } from "../../atoms/directoryMenuAtom";
+import useDirectory from "../../hooks/useDirectory";
 import { Flex, Image } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase/clientApp";
 import Directory from "./Directory/Directory";
@@ -9,11 +10,7 @@ import SearchInput from "./SearchInput";
 
 const Navbar: React.FC = () => {
     const [user, loading, error] = useAuthState(auth);
-    const router = useRouter();
-
-    const onClick = () => {
-        router.push(`/`);
-    }
+    const { onSelectMenuItem } = useDirectory();
 
     return (
         <>
@@ -29,7 +26,9 @@ const Navbar: React.FC = () => {
                 boxShadow="0px 0px 5px 5px #E0E0E0"
             >
                 {/* () => { window.location.href = '/' }  <-- Can be used for routing too but refreshes the page */}
-                <Flex align="center" width={{ base: "40px", md: "auto" }} mr={{ base: 0, md: 2 }} cursor="pointer" onClick={onClick}>
+                <Flex align="center" width={{ base: "40px", md: "auto" }} mr={{ base: 0, md: 2 }} cursor="pointer"
+                    onClick={() => onSelectMenuItem(defaultMenuItem)}
+                >
                     <Image src="/images/redditFace.svg" alt="reddit-logo" height="30px" />
                     <Image src="/images/redditText.svg" alt="reddit-text" height="46px" display={{
                         base: "none",

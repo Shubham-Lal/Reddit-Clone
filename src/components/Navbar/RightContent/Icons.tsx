@@ -54,7 +54,7 @@ const Icons: React.FC = () => {
                 </Flex>
             </Flex>
             <>
-                <Flex
+                {/* <Flex
                     mr={1.5}
                     ml={1.5}
                     padding={1}
@@ -63,7 +63,7 @@ const Icons: React.FC = () => {
                     _hover={{ bg: "gray.200" }}
                 >
                     <Icon as={BsChatDots} fontSize={20} />
-                </Flex>
+                </Flex> */}
                 <Flex
                     mr={1.5}
                     ml={1.5}

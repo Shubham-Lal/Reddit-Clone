@@ -8,6 +8,7 @@ import { IoImageOutline } from "react-icons/io5";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../atoms/authModalAtom";
 import { useState } from "react";
+import useDirectory from "@/hooks/useDirectory";
 
 
 const CreatePostLink: React.FC = () => {
@@ -16,6 +17,7 @@ const CreatePostLink: React.FC = () => {
     const [user] = useAuthState(auth);
     const setAuthModalState = useSetRecoilState(authModalState);
     const [loadingSubmit, setLoadingSubmit] = useState(false);
+    const { toggleMenuOpen } = useDirectory();
 
     const onClick = () => {
         setLoadingSubmit(true);
@@ -25,7 +27,13 @@ const CreatePostLink: React.FC = () => {
             return;
         }
         const { communityId } = router.query;
-        router.push(`/r/${communityId}/submit`);
+
+        if (communityId) {
+            router.push(`/r/${communityId}/submit`);
+            return;
+        }
+        toggleMenuOpen();
+        setLoadingSubmit(false);
     };
 
     return (
