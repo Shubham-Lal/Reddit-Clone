@@ -107,8 +107,8 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
                                 ) : (
                                     <Icon
                                         as={FaReddit}
-                                        fontSize="18pt"
-                                        mr={1}
+                                        fontSize="23pt"
+                                        mr={2}
                                         color="blue.500"
                                     />
                                 )}
@@ -122,7 +122,7 @@ const PostItem: React.FC<PostItemProps> = ({ post, userIsCreator, userVoteValue,
                     )}
                     <Stack direction="row" spacing={0.6} align="center" fontSize="9pt">
                         <Text>Posted by u/{post.creatorDisplayName}</Text>
-                        <Icon as={BsDot} color="gray.500" fontSize={10}/>
+                        <Icon as={BsDot} color="gray.500" fontSize={10} />
                         <Text color="gray.500">{moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}</Text>
                     </Stack>
                     <Divider />

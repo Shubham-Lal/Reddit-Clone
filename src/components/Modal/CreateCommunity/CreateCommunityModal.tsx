@@ -6,6 +6,8 @@ import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { useRouter } from 'next/router';
+import useDirectory from '../../../hooks/useDirectory';
 
 type CreateCommunityModalProps = {
     open: boolean;
@@ -22,6 +24,8 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({ open, handl
     const [loading, setLoading] = useState(false);
     // const format = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
     const format = /[ `!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
+    const router = useRouter();
+    const { toggleMenuOpen } = useDirectory();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setError("");
@@ -83,7 +87,11 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({ open, handl
                         imageURL: ""
                     }
                 );
-            })
+            });
+
+            handleClose();
+            toggleMenuOpen();
+            router.push(`r/${communityName}`);
         }
         catch (error: any) {
             setError(error.message);
