@@ -38,14 +38,14 @@ const formTabs: TabItems[] = [
         title: "Links",
         icon: BsLink45Deg
     },
-    {
-        title: "Poll",
-        icon: BiPoll
-    },
-    {
-        title: "Talk",
-        icon: BsMic
-    },
+    // {
+    //     title: "Poll",
+    //     icon: BiPoll
+    // },
+    // {
+    //     title: "Talk",
+    //     icon: BsMic
+    // },
 ];
 
 export type TabItems = {
@@ -60,6 +60,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user, communityData }) => {
         title: "",
         body: ""
     });
+    const [linkURL, setLinkURL] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
@@ -94,6 +95,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user, communityData }) => {
             numberOfComments: 0,
             voteStatus: 0,
             imageURL: selectedFile || "",
+            linkURL: linkURL || "",
             communityImageURL: communityData.imageURL || "",
             createdAt: serverTimestamp() as Timestamp
         };
@@ -133,9 +135,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user, communityData }) => {
             <Flex p={4}>
                 {selectedTab === "Post" && <TextInputs textInputs={textInputs} onChange={onTextChange} handleCreatePost={handleCreatePost} loading={loading} />}
                 {selectedTab === "Images & Video" && <ImageUpload selectedFile={selectedFile} setSelectedFile={setSelectedFile} onSelectImage={onSelectFile} setSelectedTab={setSelectedTab} />}
-                {selectedTab === "Links" && <LinksPostForm />}
-                {selectedTab === "Poll" && <PollsPostForm />}
-                {selectedTab === "Talk" && <TalkPostForm />}
+                {selectedTab === "Links" && <LinksPostForm linkURL={linkURL} setLinkURL={setLinkURL} setSelectedTab={setSelectedTab}/>}
             </Flex>
             {error && (
                 <Alert status='error'>
