@@ -27,6 +27,7 @@ import moment from 'moment'
 import { useState } from 'react'
 import { RWebShare } from 'react-web-share'
 import Link from 'next/link'
+import { saveAs } from 'file-saver'
 
 type PostItemProps = {
   post: Post
@@ -74,6 +75,10 @@ const PostItem: React.FC<PostItemProps> = ({
     } finally {
       setLoadingDelete(false)
     }
+  }
+
+  const downloadImage = () => {
+    saveAs(post.imageURL!, 'image.jpg');
   }
 
   return (
@@ -173,13 +178,13 @@ const PostItem: React.FC<PostItemProps> = ({
             {post.body}
           </Text>
           {post.linkURL && (
-            <Link href={post.linkURL} target="_blank">
+            <Link href={post.linkURL} target='_blank'>
               <Text
                 fontSize='10pt'
                 cursor={singlePostPage ? 'default' : 'pointer'}
                 onClick={() => onSelectPost && onSelectPost(post)}
-                textDecoration="underline"
-                color="blue.500"
+                textDecoration='underline'
+                color='blue.500'
               >
                 {post.linkURL}
               </Text>
@@ -250,6 +255,7 @@ const PostItem: React.FC<PostItemProps> = ({
               borderRadius={4}
               _hover={{ bg: 'gray.200' }}
               cursor='pointer'
+              onClick={downloadImage}
             >
               <Icon as={IoBookmarkOutline} mr={2} />
               <Text fontSize='9pt'>Save</Text>
