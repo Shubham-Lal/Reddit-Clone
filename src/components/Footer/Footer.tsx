@@ -25,7 +25,7 @@ const Footer = () => {
                 <BsFillSuitHeartFill />
             </Text>
             <Text ml={1}>by</Text>
-            <Link href="https://shubhamlal.pages.dev" target="_blank">
+            <Link href="https://github.com/Shubham-Lal" target="_blank">
                 <Text ml={1} color="#FF3C00" textDecoration="underline">Shubham Lal</Text>
             </Link>
         </Flex>
